@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.example.krngrvr09.vendorapp.AddItemActivity">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/add_name"
+        android:hint="Name"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/add_price"
+        android:hint="Price"
+        android:layout_below="@+id/add_name"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/add_quantity"
+        android:hint="Quantity"
+        android:layout_below="@+id/add_price"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:id="@+id/image"
+        android:layout_below="@+id/add_quantity"
+
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Take Photo"
+        android:id="@+id/take_photo"
+        android:layout_below="@+id/image"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Select from Galary"
+        android:id="@+id/select_from_galary"
+        android:layout_below="@+id/take_photo"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/add_this_item"
+        android:text="Add Item"
+        android:layout_below="@+id/select_from_galary"/>
+
+
+</RelativeLayout>
