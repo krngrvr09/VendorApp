@@ -1,7 +1,9 @@
 package com.example.krngrvr09.vendorapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -17,9 +19,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends FragmentActivity {
@@ -31,6 +39,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         dbHelper = new DatabaseHelper(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -94,6 +103,7 @@ public class MainActivity extends FragmentActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             mNum = getArguments() != null ? getArguments().getInt("num") : 1;
+
         }
 
         /**
@@ -103,18 +113,48 @@ public class MainActivity extends FragmentActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View v = inflater.inflate(R.layout.fragment_pager_list, container, false);
+            View v = inflater.inflate(R.layout.fragment_coordinator_layout, container, false);
             View tv = v.findViewById(R.id.text);
-            ((TextView)tv).setText("Fragment #" + mNum);
+            FloatingActionButton btn = (FloatingActionButton) v.findViewById(R.id.fab);
+            if(mNum==0){
+                ((TextView)tv).setText("Pending Orders");
+                btn.setVisibility(View.INVISIBLE);
+
+            }
+            else if(mNum==1){
+                ((TextView)tv).setText("Completed Orders");
+                btn.setVisibility(View.INVISIBLE);
+            }
+            else{
+                ((TextView)tv).setText("Inventory Items");
+                btn.setVisibility(View.VISIBLE);
+                btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getActivity(), AddItemActivity.class);
+                        startActivity(intent);
+                    }
+                });
+            }
             return v;
         }
 
         @Override
         public void onActivityCreated(Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
-            String[] stringlist = {"ab","ab","ab"};
-            setListAdapter(new ArrayAdapter<String>(getActivity(),
-                    android.R.layout.simple_list_item_1,stringlist));
+            String[] stringlist = {"No Orders Yet"};
+            ArrayList<Item> itemList = new ArrayList<>();
+            itemList.add(new Item("Burger", 35, 10, R.drawable.burger));
+            itemList.add(new Item("Veg Sandwich",35,15,R.drawable.sandwich));
+            itemList.add(new Item("Samosa", 10, 5, R.drawable.samosa));
+            if(mNum==2) {
+                setListAdapter(new CustomBaseAdapter(getActivity(), itemList));
+            }
+            else{
+                setListAdapter(new ArrayAdapter<String>(getActivity(),
+                        android.R.layout.simple_list_item_1, stringlist));
+
+            }
         }
 
         @Override
@@ -122,6 +162,8 @@ public class MainActivity extends FragmentActivity {
             Log.i("FragmentList", "Item clicked: " + id);
         }
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
