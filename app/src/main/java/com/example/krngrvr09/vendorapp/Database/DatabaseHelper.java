@@ -1,4 +1,4 @@
-package com.example.krngrvr09.vendorapp;
+package com.example.krngrvr09.vendorapp.Database;
 
 import android.content.Context;
 import android.database.SQLException;

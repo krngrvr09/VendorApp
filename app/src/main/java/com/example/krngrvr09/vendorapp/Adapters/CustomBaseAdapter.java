@@ -1,4 +1,4 @@
-package com.example.krngrvr09.vendorapp;
+package com.example.krngrvr09.vendorapp.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.krngrvr09.vendorapp.Models.Item;
+import com.example.krngrvr09.vendorapp.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -15,13 +17,15 @@ import java.util.ArrayList;
 /**
  * Created by krngrvr09 on 26/10/15.
  */
-class CustomBaseAdapter extends BaseAdapter {
+public class CustomBaseAdapter extends BaseAdapter {
     Context context;
     ArrayList<Item> itemList;
-    public CustomBaseAdapter(Context context, ArrayList<Item> itemList){
+
+    public CustomBaseAdapter(Context context, ArrayList<Item> itemList) {
         this.context = context;
         this.itemList = itemList;
     }
+
     @Override
     public int getCount() {
         return itemList.size();
@@ -36,14 +40,14 @@ class CustomBaseAdapter extends BaseAdapter {
     public long getItemId(int i) {
         return i;
     }
+
     class ViewHolder {
         TextView name;
         TextView price;
         TextView quantity;
         ImageView image;
 
-        ViewHolder(View v)
-        {
+        ViewHolder(View v) {
             name = (TextView) v.findViewById(R.id.item_name);
             price = (TextView) v.findViewById(R.id.item_price);
             quantity = (TextView) v.findViewById(R.id.item_quantity);
@@ -66,11 +70,19 @@ class CustomBaseAdapter extends BaseAdapter {
             holder = (ViewHolder) row.getTag();
         }
 
-        holder.name.setText("Name: "+itemList.get(i).name);
-        holder.price.setText(String.valueOf(itemList.get(i).price));
-        holder.quantity.setText(String.valueOf(itemList.get(i).quantity)
+        holder.name.setText("Name: " + itemList.get(i).getName());
+        holder.price.setText(String.valueOf(itemList.get(i).getPrice()));
+        holder.quantity.setText(String.valueOf(itemList.get(i).getQuantity())
         );
-        Picasso.with(context).load(itemList.get(i).image_resource_url).into(holder.image);
+        if(!((Integer) itemList.get(i).getImage_resource_url()).equals(0)){
+            Picasso.with(context).load(itemList.get(i).getImage_resource_url()).into(holder.image);
+
+        }
+        else
+        {
+            Picasso.with(context).load(itemList.get(i).getImage_url()).into(holder.image);
+
+        }
 
 
         return row;

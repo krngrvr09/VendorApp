@@ -1,4 +1,4 @@
-package com.example.krngrvr09.vendorapp;
+package com.example.krngrvr09.vendorapp.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import com.example.krngrvr09.vendorapp.R;
 
 import java.io.File;
 import java.io.IOException;

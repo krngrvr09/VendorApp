@@ -1,17 +1,16 @@
-package com.example.krngrvr09.vendorapp;
+package com.example.krngrvr09.vendorapp.Activities;
 
-import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,49 +18,48 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import com.example.krngrvr09.vendorapp.Adapters.CustomBaseAdapter;
+import com.example.krngrvr09.vendorapp.Adapters.ViewPagerAdapter;
+import com.example.krngrvr09.vendorapp.Database.DatabaseHelper;
+import com.example.krngrvr09.vendorapp.Fragments.CompletedOrderFragment;
+import com.example.krngrvr09.vendorapp.Fragments.OrderListFragment;
+import com.example.krngrvr09.vendorapp.Models.Item;
+import com.example.krngrvr09.vendorapp.R;
 
 import java.util.ArrayList;
 
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends AppCompatActivity {
     static final int NUM_ITEMS = 3;
-    MyAdapter mAdapter;
-
-    ViewPager mPager;
+    private MyAdapter mAdapter;
+    private Toolbar toolbar;
+    private TabLayout tabLayout;
+    private ViewPager mPager;
     DatabaseHelper dbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
         dbHelper = new DatabaseHelper(this);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
         mAdapter = new MyAdapter(getSupportFragmentManager());
 
-        mPager = (ViewPager)findViewById(R.id.pager);
-        mPager.setAdapter(mAdapter);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        // Watch for button clicks.
-//        Button button = (Button)findViewById(R.id.goto_first);
-//        button.setOnClickListener(new OnClickListener() {
-//            public void onClick(View v) {
-//                mPager.setCurrentItem(0);
-//            }
-//        });
-//        button = (Button)findViewById(R.id.goto_last);
-//        button.setOnClickListener(new OnClickListener() {
-//            public void onClick(View v) {
-//                mPager.setCurrentItem(NUM_ITEMS-1);
-//            }
-//        });
+
+        mPager = (ViewPager) findViewById(R.id.pager);
+        setupViewPager(mPager);
+
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mPager);
+
     }
+
     public static class MyAdapter extends FragmentPagerAdapter {
         public MyAdapter(FragmentManager fm) {
             super(fm);
@@ -116,17 +114,15 @@ public class MainActivity extends FragmentActivity {
             View v = inflater.inflate(R.layout.fragment_coordinator_layout, container, false);
             View tv = v.findViewById(R.id.text);
             FloatingActionButton btn = (FloatingActionButton) v.findViewById(R.id.fab);
-            if(mNum==0){
-                ((TextView)tv).setText("Pending Orders");
+            if (mNum == 0) {
+                ((TextView) tv).setText("Pending Orders");
                 btn.setVisibility(View.INVISIBLE);
 
-            }
-            else if(mNum==1){
-                ((TextView)tv).setText("Completed Orders");
+            } else if (mNum == 1) {
+                ((TextView) tv).setText("Completed Orders");
                 btn.setVisibility(View.INVISIBLE);
-            }
-            else{
-                ((TextView)tv).setText("Inventory Items");
+            } else {
+                ((TextView) tv).setText("Inventory Items");
                 btn.setVisibility(View.VISIBLE);
                 btn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -144,13 +140,12 @@ public class MainActivity extends FragmentActivity {
             super.onActivityCreated(savedInstanceState);
             String[] stringlist = {"No Orders Yet"};
             ArrayList<Item> itemList = new ArrayList<>();
-            itemList.add(new Item("Burger", 35, 10, R.drawable.burger));
-            itemList.add(new Item("Veg Sandwich",35,15,R.drawable.sandwich));
+            itemList.add(new Item("Burger", 35, 10, "http://www.mealadvisors.com/files/get/path/original/galleries/burger_large.jpg"));
+            itemList.add(new Item("Veg Sandwich", 35, 15, R.drawable.sandwich));
             itemList.add(new Item("Samosa", 10, 5, R.drawable.samosa));
-            if(mNum==2) {
+            if (mNum == 2) {
                 setListAdapter(new CustomBaseAdapter(getActivity(), itemList));
-            }
-            else{
+            } else {
                 setListAdapter(new ArrayAdapter<String>(getActivity(),
                         android.R.layout.simple_list_item_1, stringlist));
 
@@ -162,7 +157,6 @@ public class MainActivity extends FragmentActivity {
             Log.i("FragmentList", "Item clicked: " + id);
         }
     }
-
 
 
     @Override
@@ -187,5 +181,13 @@ public class MainActivity extends FragmentActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new OrderListFragment(), "Pending Orders");
+        adapter.addFragment(new CompletedOrderFragment(), "Completed Orders");
+        viewPager.setAdapter(adapter);
     }
 }

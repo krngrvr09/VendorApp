@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="loading_images">
+        <item>@drawable/github</item>
+        <item>@android:drawable/ic_btn_speak_now</item>
+        <item>@android:drawable/star_big_on</item>
+        <item>@android:drawable/arrow_up_float</item>
+        <item>@android:drawable/ic_menu_add</item>
+        <item>@android:drawable/ic_delete</item>
+        <item>@android:drawable/checkbox_on_background</item>
+    </array>
+</resources>

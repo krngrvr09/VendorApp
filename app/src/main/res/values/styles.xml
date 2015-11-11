@@ -1,8 +1,21 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
+        <item name="android:colorPrimaryDark">#00695C</item>
+    </style>
+
+    <style name="Widget.CardContent" parent="CardView">
+        <item name="cardBackgroundColor">@color/cardview_light_background</item>
+        <item name="android:textColor">@color/color_text_dark</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingTop">24dp</item>
+        <item name="android:paddingBottom">24dp</item>
+        <item name="android:orientation">vertical</item>
+        
+
     </style>
 
 </resources>
