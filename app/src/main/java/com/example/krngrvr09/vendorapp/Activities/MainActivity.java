@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.example.krngrvr09.vendorapp.Adapters.CustomBaseAdapter;
 import com.example.krngrvr09.vendorapp.Adapters.ViewPagerAdapter;
 import com.example.krngrvr09.vendorapp.Database.DatabaseHelper;
+import com.example.krngrvr09.vendorapp.Fragments.AddItemsFragment;
 import com.example.krngrvr09.vendorapp.Fragments.CompletedOrderFragment;
 import com.example.krngrvr09.vendorapp.Fragments.OrderListFragment;
 import com.example.krngrvr09.vendorapp.Models.Item;
@@ -32,20 +33,19 @@ import com.example.krngrvr09.vendorapp.R;
 import java.util.ArrayList;
 
 
+
 public class MainActivity extends AppCompatActivity {
     static final int NUM_ITEMS = 3;
     private MyAdapter mAdapter;
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager mPager;
-    DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        dbHelper = new DatabaseHelper(this);
         mAdapter = new MyAdapter(getSupportFragmentManager());
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -188,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new OrderListFragment(), "Pending Orders");
         adapter.addFragment(new CompletedOrderFragment(), "Completed Orders");
+        adapter.addFragment(new AddItemsFragment(), "Add New Items");
         viewPager.setAdapter(adapter);
     }
 }
