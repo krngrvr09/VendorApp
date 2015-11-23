@@ -1,7 +1,11 @@
 package com.example.krngrvr09.vendorapp.Helpers;
 
 /**
+<<<<<<< HEAD
  * Created by krngrvr09 on 23/11/15.
+=======
+ * Created by MananWason on 14/11/2015.
+>>>>>>> 5f805bbc85a71856f1679a4b87db1cd5e146ee77
  */
 public class CommonTaskLoop {
     private static CommonTaskLoop ourInstance = new CommonTaskLoop();

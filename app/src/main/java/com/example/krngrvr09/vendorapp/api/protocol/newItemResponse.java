@@ -1,15 +1,15 @@
 package com.example.krngrvr09.vendorapp.api.protocol;
 
+import com.example.krngrvr09.vendorapp.Models.Item;
 import com.example.krngrvr09.vendorapp.Models.Order;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
-
 /**
- * Created by Manan Wason on 23/11/15.
+ * Created by krngrvr09 on 23/11/15.
  */
-public class OrdersResponseList {
-    @SerializedName("orders")
-    public List<Order> orders;
+public class newItemResponse {
+    @SerializedName("id")
+    public Item item;
+
 }
+

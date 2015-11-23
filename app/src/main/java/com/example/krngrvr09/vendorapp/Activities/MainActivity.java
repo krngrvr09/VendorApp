@@ -18,12 +18,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.krngrvr09.vendorapp.Adapters.CustomBaseAdapter;
 import com.example.krngrvr09.vendorapp.Adapters.ViewPagerAdapter;
-import com.example.krngrvr09.vendorapp.Database.DatabaseHelper;
+import com.example.krngrvr09.vendorapp.Database.DataDownload;
+import com.example.krngrvr09.vendorapp.Database.DbHelper;
 import com.example.krngrvr09.vendorapp.Fragments.AddItemsFragment;
 import com.example.krngrvr09.vendorapp.Fragments.CompletedOrderFragment;
 import com.example.krngrvr09.vendorapp.Fragments.OrderListFragment;
@@ -40,12 +42,14 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager mPager;
+    DbHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        dbHelper = new DbHelper(this);
         mAdapter = new MyAdapter(getSupportFragmentManager());
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -57,6 +61,12 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mPager);
+//        DataDownload download = new DataDownload();
+//        download.downloadItems();
+//        download.downloadOrders();
+
+        final CheckBox checkBox = (CheckBox) findViewById(R.id.checkbox);
+
 
     }
 
@@ -140,9 +150,8 @@ public class MainActivity extends AppCompatActivity {
             super.onActivityCreated(savedInstanceState);
             String[] stringlist = {"No Orders Yet"};
             ArrayList<Item> itemList = new ArrayList<>();
-            itemList.add(new Item("Burger", 35, 10, "http://www.mealadvisors.com/files/get/path/original/galleries/burger_large.jpg"));
-            itemList.add(new Item("Veg Sandwich", 35, 15, R.drawable.sandwich));
-            itemList.add(new Item("Samosa", 10, 5, R.drawable.samosa));
+            itemList.add(new Item("Burger",1 , "abc", 35, 10, "http://www.mealadvisors.com/files/get/path/original/galleries/burger_large.jpg", 3));
+            itemList.add(new Item("Pav bhaji",2 , "abc", 30, 20, "http://www.mealadvisors.com/files/get/path/original/galleries/burger_large.jpg", 2));
             if (mNum == 2) {
                 setListAdapter(new CustomBaseAdapter(getActivity(), itemList));
             } else {

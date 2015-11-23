@@ -1,28 +1,41 @@
 package com.example.krngrvr09.vendorapp.Models;
 
 /**
- * Created by krngrvr09 on 23/11/15.
+<<<<<<< HEAD
+ * Created by Manan Wason on 15/11/15.
  */
 public class User {
-    String name;
-    String email;
+    private int id;
+    private String email;
+    private String name;
 
-    public User(String name, String email){
-        this.name = name;
+    public User(int id, String name, String email) {
+        this.id = id;
         this.email = email;
-    }
-
-    public String getEmail(){
-        return this.email;
-    }
-    public String getName(){
-        return this.name;
-    }
-    public void setEmail(String email){
-        this.email = email;
-    }
-    public void setName(String name){
         this.name = name;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

@@ -10,19 +10,32 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.example.krngrvr09.vendorapp.Database.DbContract;
+import com.example.krngrvr09.vendorapp.Database.DbSingleton;
+import com.example.krngrvr09.vendorapp.Models.Item;
 import com.example.krngrvr09.vendorapp.R;
+import com.example.krngrvr09.vendorapp.api.APIClient;
+import com.example.krngrvr09.vendorapp.api.protocol.newItemResponse;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
 public class AddItemActivity extends ActionBarActivity {
@@ -56,6 +69,7 @@ public class AddItemActivity extends ActionBarActivity {
             } else if (requestCode == CAPTURE_IMAGE) {
                 selectedImagePath = getImagePath();
                 image.setImageBitmap(decodeFile(selectedImagePath));
+
             } else {
                 super.onActivityResult(requestCode, resultCode, data);
             }
@@ -145,31 +159,17 @@ public class AddItemActivity extends ActionBarActivity {
             }
         }
     }
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-//            Bundle extras = data.getExtras();
-//            Bitmap imageBitmap = (Bitmap) extras.get("data");
-//            image.setImageBitmap(imageBitmap);
-//        }
-//    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
-        EditText add_name = (EditText) findViewById(R.id.add_name);
-        EditText add_price = (EditText) findViewById(R.id.add_price);
-        EditText add_quantity = (EditText) findViewById(R.id.add_quantity);
+        final EditText add_name = (EditText) findViewById(R.id.add_name);
+        final EditText add_price = (EditText) findViewById(R.id.add_price);
+        final EditText add_quantity = (EditText) findViewById(R.id.add_quantity);
         take_photo = (Button) findViewById(R.id.take_photo);
         select_from_galary = (Button) findViewById(R.id.select_from_galary);
         image = (ImageView) findViewById(R.id.image);
         Button add_item = (Button) findViewById(R.id.add_this_item);
-//        take_photo.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                dispatchTakePictureIntent();
-//            }
-//        });
         select_from_galary.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -194,6 +194,44 @@ public class AddItemActivity extends ActionBarActivity {
         add_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String name = String.valueOf(add_name.getText());
+                String price = String.valueOf(add_price.getText());
+                String quantity = String.valueOf(add_quantity.getText());
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                Bitmap bm = decodeFile(getImagePath());
+                bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+                byte[] b = baos.toByteArray();
+
+                String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+                Log.d("hahaname", name);
+                Log.d("hahaprice", String.valueOf(Integer.parseInt(price)));
+                Log.d("hahaprice1", String.valueOf(price));
+                Log.d("hahaquantity", String.valueOf(Integer.parseInt(quantity)));
+                Log.d("hahaquantity1", String.valueOf(quantity));
+
+                Item item = new Item(name, 0,"tikki",Integer.parseInt(price), Integer.parseInt(quantity),encodedImage,0);
+                APIClient apiClient = new APIClient();
+                apiClient.getmApi().createItem(item, new Callback<newItemResponse>() {
+                    @Override
+                    public void success(newItemResponse s, Response response) {
+                        Log.d("new item", "success");
+//                        DbSingleton mDbSingleton = DbSingleton.getInstance();
+//                        mDbSingleton.deleteAllRecords(DbContract.Cart.TABLE_NAME);
+
+//                        Toast.makeText(PaymentActivity.this, "Order Received", Toast.LENGTH_LONG).show();
+
+//                        Intent intent = new Intent(PaymentActivity.this, MainActivity.class);
+//                        startActivity(intent);
+
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.d("new order", error.getCause().toString());
+
+                    }
+                });
+
 
             }
         });

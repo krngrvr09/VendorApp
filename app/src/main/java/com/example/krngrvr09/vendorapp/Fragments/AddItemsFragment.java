@@ -65,8 +65,8 @@ public class AddItemsFragment extends Fragment {
         View view = inflater.inflate(R.layout.items_list, container, false);
         ListView items_list = (ListView) view.findViewById(R.id.items_list);
         items = new ArrayList<>();
-        items.add(new Item("burger",25,25,R.drawable.burger));
-        items.add(new Item("burger", 25, 25, R.drawable.burger));
+//        items.add(new Item("burger",25,"tikki, bun",25,5,R.drawable.burger));
+//        items.add(new Item("burger", 25, 25, R.drawable.burger));
 
         items_list.setAdapter(new CustomBaseAdapter(getContext(), items));
         FloatingActionButton btn = (FloatingActionButton) view.findViewById(R.id.fab);

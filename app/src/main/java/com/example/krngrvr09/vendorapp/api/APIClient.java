@@ -10,10 +10,6 @@ import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 
 
-/**
- * Created by MananWason on 14-11-2015.
- */
-
 public final class APIClient {
     /**
      * This is the base url can be changed via a config Param

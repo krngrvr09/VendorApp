@@ -9,7 +9,11 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 /**
+<<<<<<< HEAD
  * Created by krngrvr09 on 23/11/15.
+=======
+ * Created by MananWason on 14/11/2015.
+>>>>>>> 5f805bbc85a71856f1679a4b87db1cd5e146ee77
  */
 public class CommonEventLoop {
     private ScheduledExecutorService m_executor = Executors.newSingleThreadScheduledExecutor(new ThreadFactory() {

@@ -74,8 +74,8 @@ public class CustomBaseAdapter extends BaseAdapter {
         holder.price.setText(String.valueOf(itemList.get(i).getPrice()));
         holder.quantity.setText(String.valueOf(itemList.get(i).getQuantity())
         );
-        if(!((Integer) itemList.get(i).getImage_resource_url()).equals(0)){
-            Picasso.with(context).load(itemList.get(i).getImage_resource_url()).into(holder.image);
+        if(!( itemList.get(i).getImage_url().isEmpty())){
+            Picasso.with(context).load(itemList.get(i).getImage_url()).into(holder.image);
 
         }
         else
