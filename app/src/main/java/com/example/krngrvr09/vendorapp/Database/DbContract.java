@@ -22,29 +22,36 @@ public class DbContract {
         public static final String TABLE_NAME = "items";
         public static final String ITEM_ID = "itemId";
         public static final String ITEM_NAME = "itemName";
-        public static final String QUANTITY = "quantity";
+        public static final String QUANTITY_ORDERED = "quantityOrdered";
         public static final String IMAGE_URL = "imageUrl";
-        public static final String  CONTENTS= "contents";
+        public static final String CONTENTS = "contents";
         public static final String PRICE = "price";
+        public static final String RATING = "rating";
+        public static final String QUANTITY_AVAILABLE = "qtyAvailable";
 
         public static final String[] FULL_PROJECTION = {
                 ITEM_ID,
                 ITEM_NAME,
-                QUANTITY,
+                QUANTITY_ORDERED,
                 IMAGE_URL,
                 CONTENTS,
-                PRICE
+                PRICE,
+                RATING,
+                QUANTITY_AVAILABLE
         };
         public static final String CREATE_TABLE =
                 "CREATE TABLE " + TABLE_NAME
                         + " ("
                         + ITEM_ID + INT_TYPE + PRIMARY_KEY + COMMA_SEP
                         + ITEM_NAME + TEXT_TYPE + COMMA_SEP
-                        + QUANTITY + INT_TYPE + COMMA_SEP
+                        + QUANTITY_ORDERED + REAL_TYPE + COMMA_SEP
                         + IMAGE_URL + TEXT_TYPE + COMMA_SEP
                         + CONTENTS + TEXT_TYPE + COMMA_SEP
-                        + PRICE + INT_TYPE
+                        + PRICE + REAL_TYPE + COMMA_SEP
+                        + RATING + REAL_TYPE + COMMA_SEP
+                        + QUANTITY_AVAILABLE + REAL_TYPE
                         + " );";
+        public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
 
     }
 

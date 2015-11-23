@@ -1,6 +1,7 @@
 package com.example.krngrvr09.vendorapp.api.network;
 
 import com.example.krngrvr09.vendorapp.Models.Order;
+import com.example.krngrvr09.vendorapp.api.protocol.ItemsResponseList;
 import com.example.krngrvr09.vendorapp.api.protocol.OrdersResponseList;
 import com.example.krngrvr09.vendorapp.api.protocol.UserResponse;
 import com.example.krngrvr09.vendorapp.api.protocol.newOrderResponse;
@@ -17,15 +18,18 @@ import retrofit.http.Query;
 
 public interface mAPI {
 
-    @GET("/get_orders")
-    void getOrders(@Query("user_id") int id, Callback<OrdersResponseList> ordersResponseListCallback);
+    @GET("/orders")
+    void getOrders(@Query("status") boolean status, Callback<OrdersResponseList> ordersResponseListCallback);
 
     //TODO: ADD REQUESTS HERE
 
     @POST("/orders")
     void createItem(@Body Order order, Callback<newOrderResponse> callback);
 
-    @GET("/get_Users")
-    void getUserId(@Query("name") String name, @Query("email") String email, Callback<UserResponse> userResponseCallback);
+    @GET("/users")
+    void getUsers(Callback<UserResponse> userResponseCallback);
+
+    @GET("/items")
+    void getItems(Callback<ItemsResponseList> itemsResponseListCallback);
 
 }

@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 /**
  * Created by krngrvr09 on 26/10/15.
  */
-public class DatabaseHelper extends SQLiteOpenHelper {
+public class DbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "vendor_database";
     private static final String TABLE_NAME = "INVENTORY";
     private static final String UID = "_id";
@@ -22,7 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
      private static final String CREATE_TABLE="CREATE TABLE "+ TABLE_NAME +"("+UID+" INTEGER PRIMARY_KEY AUTOINCREMENT, "+NAME+" VARCHAR(255), "+QUANTITY+" INTEGER, "+PRICE+" INTEGER, "+URL+" VARCHAR(255));";
     private static final String DROP_TABLE = "DROP TABLE IF EXISTS "+TABLE_NAME+";";
-    public DatabaseHelper(Context context) {
+    public DbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

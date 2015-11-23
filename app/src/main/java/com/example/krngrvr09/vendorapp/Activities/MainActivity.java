@@ -24,7 +24,7 @@ import android.widget.TextView;
 
 import com.example.krngrvr09.vendorapp.Adapters.CustomBaseAdapter;
 import com.example.krngrvr09.vendorapp.Adapters.ViewPagerAdapter;
-import com.example.krngrvr09.vendorapp.Database.DatabaseHelper;
+import com.example.krngrvr09.vendorapp.Database.DbHelper;
 import com.example.krngrvr09.vendorapp.Fragments.CompletedOrderFragment;
 import com.example.krngrvr09.vendorapp.Fragments.OrderListFragment;
 import com.example.krngrvr09.vendorapp.Models.Item;
@@ -39,14 +39,14 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager mPager;
-    DatabaseHelper dbHelper;
+    DbHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        dbHelper = new DatabaseHelper(this);
+        dbHelper = new DbHelper(this);
         mAdapter = new MyAdapter(getSupportFragmentManager());
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
