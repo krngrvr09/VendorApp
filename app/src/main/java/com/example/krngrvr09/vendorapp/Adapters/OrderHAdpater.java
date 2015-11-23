@@ -1,7 +1,6 @@
 package com.example.krngrvr09.vendorapp.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -23,7 +22,6 @@ public class OrderHAdpater extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private static Toast sToast;
     private List<String> mDataList;
     private int mRowIndex = -1;
-    private int[] mColors = new int[]{Color.RED, Color.BLUE, Color.GREEN, Color.MAGENTA, Color.DKGRAY};
 
     public OrderHAdpater() {
     }
@@ -63,8 +61,6 @@ public class OrderHAdpater extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         ItemViewHolder holder = (ItemViewHolder) rawHolder;
         Uri uri = Uri.parse("http://pctechmag.com/wp-content/uploads/2013/09/android-double-down.jpg");
         Picasso.with(holder.image.getContext()).load(uri).error(R.drawable.github).into(holder.image);
-//            holder.image.set("ABC");
-//            holder.itemView.setBackgroundColor(mColors[position % mColors.length]);
         holder.itemView.setTag(position);
     }
 
