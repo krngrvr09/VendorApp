@@ -30,17 +30,19 @@ public class OrdersListResponseProcessor implements Callback<OrdersResponseList>
         for (Order order : ordersResponseList.orders) {
             ArrayList<Item> items = order.getItems();
             StringBuilder itemString = new StringBuilder();
-            itemString.append("");
+            itemString.append(items.get(0));
+            items.remove(0);
             for (Item item : items) {
-                itemString.append(item.getId());
+                itemString.append(item.getId() + "  " +order.getOrderId());
                 itemString.append(" ,");
+
             }
+            Log.d("qwer", itemString.toString());
+
             order.setItemsString(itemString.toString());
             String query = order.generateSql();
 
-            Log.d("retro order", order.getOrderId() + "");
             queries.add(query);
-//            Log.d(TAG, query);
         }
 
         DbSingleton dbSingleton = DbSingleton.getInstance();
