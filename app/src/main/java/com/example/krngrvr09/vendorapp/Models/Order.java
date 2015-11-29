@@ -1,7 +1,5 @@
 package com.example.krngrvr09.vendorapp.Models;
 
-import java.util.ArrayList;
-
 import android.database.DatabaseUtils;
 import android.util.Log;
 
@@ -110,9 +108,6 @@ public class Order {
                 (int)costOfOrder,
                 1,
                 1);
-
-                /*isOrderCompleted?"completed":"not completed",
-                isPaymentMade?"paid":"not paid");*/
 
         Log.d("query order", query);
         return query;

@@ -1,15 +1,18 @@
 package com.example.krngrvr09.vendorapp.Activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
@@ -18,10 +21,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.example.krngrvr09.vendorapp.Database.DbContract;
-import com.example.krngrvr09.vendorapp.Database.DbSingleton;
 import com.example.krngrvr09.vendorapp.Models.Item;
 import com.example.krngrvr09.vendorapp.R;
 import com.example.krngrvr09.vendorapp.api.APIClient;
@@ -38,18 +38,27 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class AddItemActivity extends ActionBarActivity {
-/*---------------------------------------------------*/
+public class AddItemActivity extends AppCompatActivity {
+    private static final String TAG = "AddItemActivity";
+    /*---------------------------------------------------*/
     private String selectedImagePath = "";
     final private int PICK_IMAGE = 1;
     final private int CAPTURE_IMAGE = 2;
     String imgPath;
+    public Uri imagePath;
+    private static String[] PERMISSIONS_CAMERA = {Manifest.permission.CAMERA};
+    private static String[] PERMISSIONS_STORAGE = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+    private static final int REQUEST_CAMERA = 3;
+    private static final int REQUEST_STORAGE = 4;
+    private View mLayout;
+
 
     public Uri setImageUri() {
         // Store image in dcim
         File file = new File(Environment.getExternalStorageDirectory() + "/DCIM/", "image" + new Date().getTime() + ".png");
         Uri imgUri = Uri.fromFile(file);
         this.imgPath = file.getAbsolutePath();
+        imagePath = imgUri;
         return imgUri;
     }
 
@@ -59,13 +68,23 @@ public class AddItemActivity extends ActionBarActivity {
     }
 
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_CANCELED) {
-            if (requestCode == PICK_IMAGE) {
-                selectedImagePath = getAbsolutePath(data.getData());
-                image.setImageBitmap(decodeFile(selectedImagePath));
+            if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+                Uri uri = data.getData();
+
+                try {
+                    imagePath = uri;
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                    Log.d("image", String.valueOf(bitmap) + "   " + imagePath);
+                    int nh = (int) (image.getHeight() * (512.0 / image.getWidth()));
+                    Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 512, nh, true);
+                    image.setImageBitmap(scaled);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             } else if (requestCode == CAPTURE_IMAGE) {
                 selectedImagePath = getImagePath();
                 image.setImageBitmap(decodeFile(selectedImagePath));
@@ -103,17 +122,6 @@ public class AddItemActivity extends ActionBarActivity {
 
     }
 
-    public String getAbsolutePath(Uri uri) {
-        String[] projection = { MediaStore.MediaColumns.DATA };
-        @SuppressWarnings("deprecation")
-        Cursor cursor = managedQuery(uri, projection, null, null, null);
-        if (cursor != null) {
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } else
-            return null;
-    }
 
     /*-------------------------------------------*/
     ImageView image;
@@ -122,6 +130,7 @@ public class AddItemActivity extends ActionBarActivity {
     static final int REQUEST_TAKE_PHOTO = 1;
     Button take_photo;
     Button select_from_galary;
+
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -159,10 +168,17 @@ public class AddItemActivity extends ActionBarActivity {
             }
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (ActivityCompat.checkSelfPermission(AddItemActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            requestCameraPermissions();
+        } else if (ActivityCompat.checkSelfPermission(AddItemActivity.this, Manifest.permission_group.STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestStoragePermissions();
+        }
         setContentView(R.layout.activity_add_item);
+        mLayout = findViewById(R.id.add_item_view);
         final EditText add_name = (EditText) findViewById(R.id.add_name);
         final EditText add_price = (EditText) findViewById(R.id.add_price);
         final EditText add_quantity = (EditText) findViewById(R.id.add_quantity);
@@ -184,58 +200,105 @@ public class AddItemActivity extends ActionBarActivity {
 
         take_photo.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, setImageUri());
-                startActivityForResult(intent, CAPTURE_IMAGE);
-            }
-        });
-        add_item.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name = String.valueOf(add_name.getText());
-                String price = String.valueOf(add_price.getText());
-                String quantity = String.valueOf(add_quantity.getText());
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                Bitmap bm = decodeFile(getImagePath());
-                bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
-                byte[] b = baos.toByteArray();
+                                          @Override
+                                          public void onClick(View v) {
+                                              Log.d(TAG, "else");
+                                              Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                              intent.putExtra(MediaStore.EXTRA_OUTPUT, setImageUri());
+                                              startActivityForResult(intent, CAPTURE_IMAGE);
 
-                String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
-                Log.d("hahaname", name);
-                Log.d("hahaprice", String.valueOf(Integer.parseInt(price)));
-                Log.d("hahaprice1", String.valueOf(price));
-                Log.d("hahaquantity", String.valueOf(Integer.parseInt(quantity)));
-                Log.d("hahaquantity1", String.valueOf(quantity));
+                                          }
+                                      }
 
-                Item item = new Item(name, 0,"tikki",Integer.parseInt(price), Integer.parseInt(quantity),encodedImage,0);
-                APIClient apiClient = new APIClient();
-                apiClient.getmApi().createItem(item, new Callback<newItemResponse>() {
-                    @Override
-                    public void success(newItemResponse s, Response response) {
-                        Log.d("new item", "success");
-//                        DbSingleton mDbSingleton = DbSingleton.getInstance();
-//                        mDbSingleton.deleteAllRecords(DbContract.Cart.TABLE_NAME);
+        );
 
-//                        Toast.makeText(PaymentActivity.this, "Order Received", Toast.LENGTH_LONG).show();
+        add_item.setOnClickListener(new View.OnClickListener()
 
-//                        Intent intent = new Intent(PaymentActivity.this, MainActivity.class);
-//                        startActivity(intent);
+                                    {
+                                        @Override
+                                        public void onClick(View view) {
+                                            String name = String.valueOf(add_name.getText());
+                                            String price = String.valueOf(add_price.getText());
+                                            String quantity = String.valueOf(add_quantity.getText());
+                                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                            Bitmap bm;
+                                            try {
+                                                bm = MediaStore.Images.Media.getBitmap(getContentResolver(), imagePath);
+                                                bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+                                                byte[] b = baos.toByteArray();
+                                                String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+                                                Item item = new Item(name, 0, "fb", Integer.parseInt(price), Integer.parseInt(quantity), encodedImage, 0);
+                                                APIClient apiClient = new APIClient();
+                                                apiClient.getmApi().createItem(item, new Callback<newItemResponse>() {
+                                                    @Override
+                                                    public void success(newItemResponse s, Response response) {
+                                                        Log.d("new item", "success");
 
-                    }
+                                                    }
 
-                    @Override
-                    public void failure(RetrofitError error) {
-                        Log.d("new order", error.getCause().toString());
+                                                    @Override
+                                                    public void failure(RetrofitError error) {
+                                                        Log.d("new item", error.getCause().toString());
 
-                    }
-                });
+                                                    }
+                                                });
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+//                Log.d("hahaname", name);
+//                Log.d("hahaprice", String.valueOf(Integer.parseInt(price)));
+//                Log.d("hahaprice1", String.valueOf(price));
+//                Log.d("hahaquantity", String.valueOf(Integer.parseInt(quantity)));
+//                Log.d("hahaquantity1", String.valueOf(quantity));
 
 
-            }
-        });
+                                        }
+                                    }
 
+        );
+
+    }
+
+    private void requestStoragePermissions() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+            Snackbar.make(mLayout, R.string.permission_storage_rationale,
+                    Snackbar.LENGTH_INDEFINITE)
+                    .setAction(R.string.ok, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            ActivityCompat
+                                    .requestPermissions(AddItemActivity.this, PERMISSIONS_STORAGE,
+                                            REQUEST_STORAGE);
+                        }
+                    })
+                    .show();
+        } else {
+            ActivityCompat.requestPermissions(this, PERMISSIONS_STORAGE, REQUEST_CAMERA);
+        }
+    }
+
+    private void requestCameraPermissions() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.CAMERA)) {
+            Log.i(TAG,
+                    "Displaying contacts permission rationale to provide additional context.");
+
+            Snackbar.make(mLayout, R.string.permission_camera_rationale,
+                    Snackbar.LENGTH_INDEFINITE)
+                    .setAction(R.string.ok, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            ActivityCompat
+                                    .requestPermissions(AddItemActivity.this, PERMISSIONS_CAMERA,
+                                            REQUEST_CAMERA);
+                        }
+                    })
+                    .show();
+        } else {
+            ActivityCompat.requestPermissions(this, PERMISSIONS_CAMERA, REQUEST_CAMERA);
+        }
     }
 
     @Override
