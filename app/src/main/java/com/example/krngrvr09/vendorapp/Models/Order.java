@@ -1,13 +1,13 @@
 package com.example.krngrvr09.vendorapp.Models;
 
-import java.util.ArrayList;
-
 import android.database.DatabaseUtils;
 import android.util.Log;
 
 import com.example.krngrvr09.vendorapp.Database.DbContract;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
 
 
 /**
@@ -113,9 +113,6 @@ public class Order {
                 (int)costOfOrder,
                 isPaymentMade,
                 isOrderCompleted);
-
-                /*isOrderCompleted?"completed":"not completed",
-                isPaymentMade?"paid":"not paid");*/
 
         Log.d("query order", query);
         return query;
