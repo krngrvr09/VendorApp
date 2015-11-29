@@ -1,14 +1,16 @@
 package com.example.krngrvr09.vendorapp.Activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.ListFragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -26,26 +28,21 @@ import android.widget.TextView;
 import com.example.krngrvr09.vendorapp.Adapters.CustomBaseAdapter;
 import com.example.krngrvr09.vendorapp.Adapters.ViewPagerAdapter;
 import com.example.krngrvr09.vendorapp.Database.DbHelper;
-import com.example.krngrvr09.vendorapp.Database.DbSingleton;
 import com.example.krngrvr09.vendorapp.Events.OrderDownloadDoneEvent;
 import com.example.krngrvr09.vendorapp.Fragments.AddItemsFragment;
 import com.example.krngrvr09.vendorapp.Fragments.CompletedOrderFragment;
 import com.example.krngrvr09.vendorapp.Fragments.OrderListFragment;
+import com.example.krngrvr09.vendorapp.Helpers.DataDownload;
 import com.example.krngrvr09.vendorapp.Models.Item;
 import com.example.krngrvr09.vendorapp.R;
+import com.example.krngrvr09.vendorapp.Services.QuickstartPreferences;
 import com.example.krngrvr09.vendorapp.VendorApp;
 import com.example.krngrvr09.vendorapp.api.APIClient;
 import com.example.krngrvr09.vendorapp.api.processor.OrdersListResponseProcessor;
-import com.example.krngrvr09.vendorapp.api.protocol.OrdersResponseList;
-import com.example.krngrvr09.vendorapp.api.protocol.newItemResponse;
 import com.github.clans.fab.FloatingActionButton;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
-
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 public class MainActivity extends AppCompatActivity {
     static final int NUM_ITEMS = 3;
@@ -67,14 +64,14 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mPager);
-//        DataDownload download = new DataDownload();
-//        download.downloadItems();
-//        download.downloadOrders();
+        DataDownload download = new DataDownload();
+        download.downloadItems();
+        download.downloadOrders();
 
         final CheckBox checkBox = (CheckBox) findViewById(R.id.checkbox);
 
         //TODO: uncomment this gcm part
-        /*
+
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         if(sharedPreferences.getString(QuickstartPreferences.REGISTRATION_TOKEN,"").equals("")) {
 
@@ -96,10 +93,11 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, RegistrationIntentService.class);
             startService(intent);
         }
-        */
+
 
 
     }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -113,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
         VendorApp.getEventBus().register(this);
 
     }
+
     @Subscribe
     public void OrderDownloadDone(OrderDownloadDoneEvent event) {
 //        Log.d("retro event", eventsDone + " " + counter);
@@ -132,9 +131,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-    private void downloadOrders(){
+
+    private void downloadOrders() {
         APIClient apiClient = new APIClient();
-        apiClient.getmApi().getOrders(true, new OrdersListResponseProcessor());
+        apiClient.getmApi().getOrders(new OrdersListResponseProcessor());
 
     }
 

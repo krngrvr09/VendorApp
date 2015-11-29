@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.krngrvr09.vendorapp.Database.DbContract;
 import com.example.krngrvr09.vendorapp.Database.DbSingleton;
 import com.example.krngrvr09.vendorapp.Events.OrderDownloadDoneEvent;
+import com.example.krngrvr09.vendorapp.Helpers.CommonTaskLoop;
 import com.example.krngrvr09.vendorapp.Models.Item;
 import com.example.krngrvr09.vendorapp.Models.Order;
 import com.example.krngrvr09.vendorapp.VendorApp;
@@ -24,34 +25,40 @@ public class OrdersListResponseProcessor implements Callback<OrdersResponseList>
 
     @Override
     public void success(final OrdersResponseList ordersResponseList, Response response) {
-        Log.d("retro", "success");
-        ArrayList<String> queries = new ArrayList<String>();
-        Log.d("orderesponse", String.valueOf(ordersResponseList.orders));
-        for (Order order : ordersResponseList.orders) {
-            ArrayList<Item> items = order.getItems();
-            StringBuilder itemString = new StringBuilder();
-            itemString.append(items.get(0));
-            items.remove(0);
-            for (Item item : items) {
-                itemString.append(item.getId() + "  " +order.getOrderId());
-                itemString.append(" ,");
+        CommonTaskLoop.getInstance().post(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("retro", "success");
+                ArrayList<String> queries = new ArrayList<String>();
+                Log.d("orderesponse", String.valueOf(ordersResponseList.orders));
+                for (Order order : ordersResponseList.orders) {
+                    ArrayList<Item> items = order.getItems();
+                    StringBuilder itemString = new StringBuilder();
+                    itemString.append(items.get(0));
+                    items.remove(0);
+                    for (Item item : items) {
+                        itemString.append(item.getId() + "  " + order.getOrderId());
+                        itemString.append(" ,");
+
+                    }
+                    Log.d("qwer", itemString.toString());
+
+                    order.setItemsString(itemString.toString());
+                    String query = order.generateSql();
+
+                    queries.add(query);
+                }
+
+                DbSingleton dbSingleton = DbSingleton.getInstance();
+                dbSingleton.clearDatabase(DbContract.Orders.TABLE_NAME);
+                dbSingleton.insertQueries(queries);
+
+                VendorApp.postEventOnUIThread(new OrderDownloadDoneEvent(true));
+
+                Log.d("retro", "success");
 
             }
-            Log.d("qwer", itemString.toString());
-
-            order.setItemsString(itemString.toString());
-            String query = order.generateSql();
-
-            queries.add(query);
-        }
-
-        DbSingleton dbSingleton = DbSingleton.getInstance();
-        dbSingleton.clearDatabase(DbContract.Orders.TABLE_NAME);
-        dbSingleton.insertQueries(queries);
-
-        VendorApp.postEventOnUIThread(new OrderDownloadDoneEvent(true));
-
-        Log.d("retro", "success");
+        });
     }
 
     @Override

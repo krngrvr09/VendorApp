@@ -83,7 +83,7 @@ public class OrderListFragment extends Fragment{
     }
     private void downloadOrders(){
         APIClient apiClient = new APIClient();
-        apiClient.getmApi().getOrders(true, new OrdersListResponseProcessor());
+        apiClient.getmApi().getOrders(new OrdersListResponseProcessor());
 
     }
 

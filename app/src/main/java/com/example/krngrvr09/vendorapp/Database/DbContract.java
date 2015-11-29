@@ -82,7 +82,7 @@ public class DbContract {
                         + ITEMS + TEXT_TYPE + COMMA_SEP
                         + TIME + TEXT_TYPE + COMMA_SEP
                         + COST + INT_TYPE + COMMA_SEP
-                        + IS_PAYMENT_DONE + INT_TYPE+COMMA_SEP
+                        + IS_PAYMENT_DONE + INT_TYPE + COMMA_SEP
                         + IS_ORDER_COMPLETED + INT_TYPE
                         + " );";
         public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -90,24 +90,4 @@ public class DbContract {
 
     }
 
-    public static abstract class Users implements BaseColumns {
-        public static final String TABLE_NAME = "users";
-        public static final String USER_ID = "userId";
-        public static final String USER_NAME = "userName";
-        public static final String CREATION_TIME = "creationTime";
-
-        public static final String[] FULL_PROJECTION = {
-                USER_ID,
-                USER_NAME,
-                CREATION_TIME
-        };
-        public static final String CREATE_TABLE =
-                "CREATE TABLE " + TABLE_NAME
-                        + " ("
-                        + USER_ID + INT_TYPE + PRIMARY_KEY + COMMA_SEP
-                        + USER_NAME + TEXT_TYPE + COMMA_SEP
-                        + CREATION_TIME + TEXT_TYPE
-                        + " );";
-
-    }
 }

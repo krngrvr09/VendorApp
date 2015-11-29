@@ -2,6 +2,8 @@ package com.example.krngrvr09.vendorapp.api.processor;
 
 import android.util.Log;
 
+import com.example.krngrvr09.vendorapp.Database.DbContract;
+import com.example.krngrvr09.vendorapp.Database.DbSingleton;
 import com.example.krngrvr09.vendorapp.Events.ItemDownloadDoneEvent;
 import com.example.krngrvr09.vendorapp.Helpers.CommonTaskLoop;
 import com.example.krngrvr09.vendorapp.Models.Item;
@@ -15,11 +17,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 /**
-<<<<<<< HEAD
- * Created by MananWason on 14-11-2015.
-=======
  * Created by MananWason on 23-11-2015.
->>>>>>> 5f805bbc85a71856f1679a4b87db1cd5e146ee77
  */
 public class ItemsListResponseProcessor implements Callback<ItemsResponseList> {
     private static final String TAG = "Items";
@@ -40,9 +38,9 @@ public class ItemsListResponseProcessor implements Callback<ItemsResponseList> {
                     Log.d(TAG, query);
                 }
 
-//                DbSingleton dbSingleton = DbSingleton.getInstance();
-//                dbSingleton.clearDatabase(DbContract.Items.TABLE_NAME);
-//                dbSingleton.insertQueries(queries);
+                DbSingleton dbSingleton = DbSingleton.getInstance();
+                dbSingleton.clearDatabase(DbContract.Items.TABLE_NAME);
+                dbSingleton.insertQueries(queries);
 
                 VendorApp.postEventOnUIThread(new ItemDownloadDoneEvent(true));
             }

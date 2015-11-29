@@ -16,8 +16,8 @@ public class DataDownload {
         client.getmApi().getItems(new ItemsListResponseProcessor());
     }
 
-    public void downloadOrders(boolean status) {
-        client.getmApi().getOrders(status, new OrdersListResponseProcessor());
+    public void downloadOrders() {
+        client.getmApi().getOrders(new OrdersListResponseProcessor());
 
     }
 
