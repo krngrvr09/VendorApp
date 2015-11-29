@@ -73,6 +73,31 @@ public class MainActivity extends AppCompatActivity {
 
         final CheckBox checkBox = (CheckBox) findViewById(R.id.checkbox);
 
+        //TODO: uncomment this gcm part
+        /*
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if(sharedPreferences.getString(QuickstartPreferences.REGISTRATION_TOKEN,"").equals("")) {
+
+            mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    SharedPreferences sharedPreferences =
+                            PreferenceManager.getDefaultSharedPreferences(context);
+                    boolean sentToken = sharedPreferences
+                            .getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
+                    if (sentToken) {
+                        //TODO: registration token sent to server, now?
+                    } else {
+                        //TODO: registration token not sent to server, now?
+                    }
+                }
+            };
+
+            Intent intent = new Intent(this, RegistrationIntentService.class);
+            startService(intent);
+        }
+        */
+
 
     }
     @Override
