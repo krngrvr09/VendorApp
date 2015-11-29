@@ -10,6 +10,5 @@ import com.google.gson.annotations.SerializedName;
 public class newItemResponse {
     @SerializedName("id")
     public Item item;
-
 }
 

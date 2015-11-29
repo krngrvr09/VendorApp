@@ -1,13 +1,14 @@
 package com.example.krngrvr09.vendorapp.Activities;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.ListFragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -26,14 +27,26 @@ import com.example.krngrvr09.vendorapp.Adapters.CustomBaseAdapter;
 import com.example.krngrvr09.vendorapp.Adapters.ViewPagerAdapter;
 import com.example.krngrvr09.vendorapp.Database.DataDownload;
 import com.example.krngrvr09.vendorapp.Database.DbHelper;
+import com.example.krngrvr09.vendorapp.Database.DbSingleton;
+import com.example.krngrvr09.vendorapp.Events.OrderDownloadDoneEvent;
 import com.example.krngrvr09.vendorapp.Fragments.AddItemsFragment;
 import com.example.krngrvr09.vendorapp.Fragments.CompletedOrderFragment;
 import com.example.krngrvr09.vendorapp.Fragments.OrderListFragment;
 import com.example.krngrvr09.vendorapp.Models.Item;
 import com.example.krngrvr09.vendorapp.R;
+import com.example.krngrvr09.vendorapp.VendorApp;
+import com.example.krngrvr09.vendorapp.api.APIClient;
+import com.example.krngrvr09.vendorapp.api.processor.OrdersListResponseProcessor;
+import com.example.krngrvr09.vendorapp.api.protocol.OrdersResponseList;
+import com.example.krngrvr09.vendorapp.api.protocol.newItemResponse;
+import com.github.clans.fab.FloatingActionButton;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -67,6 +80,43 @@ public class MainActivity extends AppCompatActivity {
 
         final CheckBox checkBox = (CheckBox) findViewById(R.id.checkbox);
 
+
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        VendorApp.getEventBus().unregister(this);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        VendorApp.getEventBus().register(this);
+
+    }
+    @Subscribe
+    public void OrderDownloadDone(OrderDownloadDoneEvent event) {
+//        Log.d("retro event", eventsDone + " " + counter);
+
+        if (event.isState()) {
+//            eventsDone++;
+            Log.d("retro event", "is state true");
+
+//            if (counter == eventsDone) {
+//                syncComplete();
+//            }
+
+        } else {
+            Log.d("retro event", "is state false");
+
+//            downloadFailed();
+        }
+
+    }
+    private void downloadOrders(){
+        APIClient apiClient = new APIClient();
+        apiClient.getmApi().getOrders(true, new OrdersListResponseProcessor());
 
     }
 

@@ -5,6 +5,11 @@
         <!-- Customize your theme here. -->
         <item name="android:colorPrimaryDark">#00695C</item>
     </style>
+    <style name="ActionBarTheme" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="android:colorPrimaryDark">#00695C</item>
+    </style>
+
 
     <style name="Widget.CardContent" parent="CardView">
         <item name="cardBackgroundColor">@color/cardview_light_background</item>

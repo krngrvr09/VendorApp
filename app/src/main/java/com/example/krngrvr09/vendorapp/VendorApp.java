@@ -4,6 +4,7 @@ import android.app.Application;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.example.krngrvr09.vendorapp.Database.DbSingleton;
 import com.squareup.otto.Bus;
 
 /**
@@ -31,7 +32,7 @@ public class VendorApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-//        DbSingleton.init(this);
+        DbSingleton.init(this);
     }
 
 }

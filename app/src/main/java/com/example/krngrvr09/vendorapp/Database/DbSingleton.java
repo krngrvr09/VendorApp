@@ -55,7 +55,7 @@ public class DbSingleton {
 
     public ArrayList<Order> getCompletedOrdersList() {
         getReadOnlyDatabase();
-        return databaseOperations.getCompletedOrderList(mDb, 1); // revisit user id
+        return databaseOperations.getCompletedOrderList(mDb); // revisit user id
     }
 
     public ArrayList<Order> getPendingOrdersList() {

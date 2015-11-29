@@ -7,8 +7,12 @@ import android.util.Log;
 
 import com.example.krngrvr09.vendorapp.Models.Item;
 import com.example.krngrvr09.vendorapp.Models.Order;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -60,9 +64,8 @@ public class DatabaseOperations {
     }
 
 
-    public ArrayList<Order> getCompletedOrderList(SQLiteDatabase mDb, int userId) {
-        String selection = DbContract.Orders.USER_ID + EQUAL + userId + " and " +
-                DbContract.Orders.IS_ORDER_COMPLETED + EQUAL + " '1'";
+    public ArrayList<Order> getCompletedOrderList(SQLiteDatabase mDb) {
+        String selection = DbContract.Orders.IS_ORDER_COMPLETED + EQUAL + " '1'";
 
         String sortOrder = DbContract.Orders.ORDER_ID + ASCENDING;
         Cursor cur = mDb.query(
@@ -80,15 +83,19 @@ public class DatabaseOperations {
 
         cur.moveToFirst();
         while (!cur.isAfterLast()) {
-//            temp = new Order(
-//                    cur.getInt(cur.getColumnIndex(DbContract.Orders.ORDER_ID)),
-//                    cur.getInt(cur.getColumnIndex(DbContract.Orders.USER_ID)),
-//                    cur.getString(cur.getColumnIndex(DbContract.Orders.ITEMS)),
-//                    cur.getString(cur.getColumnIndex(DbContract.Orders.TIME)),
-//                    cur.getInt(cur.getColumnIndex(DbContract.Orders.COST)),
-//                    cur.getInt(cur.getColumnIndex(DbContract.Orders.IS_ORDER_COMPLETED))>0 ,
-//                    cur.getInt(cur.getColumnIndex(DbContract.Orders.IS_PAYMENT_DONE)) >0);
-//            orders.add(temp);
+            String items = cur.getString(cur.getColumnIndex(DbContract.Orders.ITEMS));
+            Type listType = new TypeToken<ArrayList<Item>>() {
+            }.getType();
+            ArrayList<Item> order_items = new Gson().fromJson(items, listType);
+            temp = new Order(
+                    cur.getInt(cur.getColumnIndex(DbContract.Orders.ORDER_ID)),
+                    cur.getInt(cur.getColumnIndex(DbContract.Orders.USER_ID)),
+                    order_items,
+                    cur.getString(cur.getColumnIndex(DbContract.Orders.TIME)),
+                    cur.getInt(cur.getColumnIndex(DbContract.Orders.COST)),
+                    cur.getInt(cur.getColumnIndex(DbContract.Orders.IS_ORDER_COMPLETED))>0 ,
+                    cur.getInt(cur.getColumnIndex(DbContract.Orders.IS_PAYMENT_DONE)) >0);
+            orders.add(temp);
 //            cur.moveToNext();
         }
         cur.close();

@@ -1,5 +1,6 @@
 package com.example.krngrvr09.vendorapp.Activities;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,6 +11,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
@@ -19,13 +21,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.example.krngrvr09.vendorapp.Database.DbContract;
 import com.example.krngrvr09.vendorapp.Database.DbSingleton;
 import com.example.krngrvr09.vendorapp.Models.Item;
 import com.example.krngrvr09.vendorapp.R;
 import com.example.krngrvr09.vendorapp.api.APIClient;
 import com.example.krngrvr09.vendorapp.api.protocol.newItemResponse;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -162,79 +164,81 @@ public class AddItemActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_item);
-        final EditText add_name = (EditText) findViewById(R.id.add_name);
-        final EditText add_price = (EditText) findViewById(R.id.add_price);
-        final EditText add_quantity = (EditText) findViewById(R.id.add_quantity);
-        take_photo = (Button) findViewById(R.id.take_photo);
-        select_from_galary = (Button) findViewById(R.id.select_from_galary);
+        setContentView(R.layout.activity_add_item_2);
+
+//        final EditText add_name = (EditText) findViewById(R.id.add_name);
+//        final EditText add_price = (EditText) findViewById(R.id.add_price);
+//        final EditText add_quantity = (EditText) findViewById(R.id.add_quantity);
+//        take_photo = (Button) findViewById(R.id.take_photo);
+//        select_from_galary = (Button) findViewById(R.id.select_from_galary);
         image = (ImageView) findViewById(R.id.image);
-        Button add_item = (Button) findViewById(R.id.add_this_item);
-        select_from_galary.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, ""), PICK_IMAGE);
-
-            }
-        });
-
-        take_photo.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, setImageUri());
-                startActivityForResult(intent, CAPTURE_IMAGE);
-            }
-        });
-        add_item.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name = String.valueOf(add_name.getText());
-                String price = String.valueOf(add_price.getText());
-                String quantity = String.valueOf(add_quantity.getText());
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                Bitmap bm = decodeFile(getImagePath());
-                bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
-                byte[] b = baos.toByteArray();
-
-                String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
-                Log.d("hahaname", name);
-                Log.d("hahaprice", String.valueOf(Integer.parseInt(price)));
-                Log.d("hahaprice1", String.valueOf(price));
-                Log.d("hahaquantity", String.valueOf(Integer.parseInt(quantity)));
-                Log.d("hahaquantity1", String.valueOf(quantity));
-
-                Item item = new Item(name, 0,"tikki",Integer.parseInt(price), Integer.parseInt(quantity),encodedImage,0);
-                APIClient apiClient = new APIClient();
-                apiClient.getmApi().createItem(item, new Callback<newItemResponse>() {
-                    @Override
-                    public void success(newItemResponse s, Response response) {
-                        Log.d("new item", "success");
-//                        DbSingleton mDbSingleton = DbSingleton.getInstance();
-//                        mDbSingleton.deleteAllRecords(DbContract.Cart.TABLE_NAME);
-
-//                        Toast.makeText(PaymentActivity.this, "Order Received", Toast.LENGTH_LONG).show();
-
-//                        Intent intent = new Intent(PaymentActivity.this, MainActivity.class);
-//                        startActivity(intent);
-
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                        Log.d("new order", error.getCause().toString());
-
-                    }
-                });
-
-
-            }
-        });
+        Picasso.with(getApplicationContext()).load(R.drawable.default_image).fit().centerCrop().into(image);
+//        image.setImageResource(R.drawable.default_image);
+//        Button add_item = (Button) findViewById(R.id.add_this_item);
+//        select_from_galary.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent();
+//                intent.setType("image/*");
+//                intent.setAction(Intent.ACTION_GET_CONTENT);
+//                startActivityForResult(Intent.createChooser(intent, ""), PICK_IMAGE);
+//
+//            }
+//        });
+//
+//        take_photo.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                intent.putExtra(MediaStore.EXTRA_OUTPUT, setImageUri());
+//                startActivityForResult(intent, CAPTURE_IMAGE);
+//            }
+//        });
+//        add_item.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                String name = String.valueOf(add_name.getText());
+//                String price = String.valueOf(add_price.getText());
+//                String quantity = String.valueOf(add_quantity.getText());
+//                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                Bitmap bm = decodeFile(getImagePath());
+//                bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+//                byte[] b = baos.toByteArray();
+//
+//                String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+//                Log.d("hahaname", name);
+//                Log.d("hahaprice", String.valueOf(Integer.parseInt(price)));
+//                Log.d("hahaprice1", String.valueOf(price));
+//                Log.d("hahaquantity", String.valueOf(Integer.parseInt(quantity)));
+//                Log.d("hahaquantity1", String.valueOf(quantity));
+//
+//                Item item = new Item(name, 0,"tikki",Integer.parseInt(price), Integer.parseInt(quantity),encodedImage,0);
+//                APIClient apiClient = new APIClient();
+//                apiClient.getmApi().createItem(item, new Callback<newItemResponse>() {
+//                    @Override
+//                    public void success(newItemResponse s, Response response) {
+//                        Log.d("new item", "success");
+////                        DbSingleton mDbSingleton = DbSingleton.getInstance();
+////                        mDbSingleton.deleteAllRecords(DbContract.Cart.TABLE_NAME);
+//
+////                        Toast.makeText(PaymentActivity.this, "Order Received", Toast.LENGTH_LONG).show();
+//
+////                        Intent intent = new Intent(PaymentActivity.this, MainActivity.class);
+////                        startActivity(intent);
+//
+//                    }
+//
+//                    @Override
+//                    public void failure(RetrofitError error) {
+//                        Log.d("new order", error.getCause().toString());
+//
+//                    }
+//                });
+//
+//            }
+//        });
 
     }
 

@@ -6,6 +6,7 @@ import android.database.DatabaseUtils;
 import android.util.Log;
 
 import com.example.krngrvr09.vendorapp.Database.DbContract;
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 
@@ -19,7 +20,7 @@ public class Order {
     @SerializedName("user_id")
     int userId;
     @SerializedName("items")
-    String items;
+    ArrayList<Item> items;
     @SerializedName("created_at")
     String dateOfOrder;
     @SerializedName("cost")
@@ -29,7 +30,7 @@ public class Order {
     @SerializedName("payment_status")
     Boolean isPaymentMade;
 
-    public Order(int orderId, int userId, String items, String dateOfOrder, double costOfOrder, Boolean isOrderCompleted, Boolean isPaymentMade) {
+    public Order(int orderId, int userId, ArrayList<Item> items, String dateOfOrder, double costOfOrder, Boolean isOrderCompleted, Boolean isPaymentMade) {
         this.orderId = orderId;
         this.userId = userId;
         this.items = items;
@@ -55,11 +56,11 @@ public class Order {
         this.userId = userId;
     }
 
-    public String getItems() {
+    public ArrayList<Item> getItems() {
         return items;
     }
 
-    public void setItems(String items) {
+    public void setItems(ArrayList<Item> items) {
         this.items = items;
     }
 
@@ -96,8 +97,10 @@ public class Order {
     }
 
     public String generateSql() {
-        String query_normal = "INSERT INTO %s VALUES ('%d', '%d', %s, '%s' , '%s' , '%d', '%d' , '%d');";
+        String query_normal = "INSERT INTO %s VALUES ('%d', '%d', %s, '%s' , '%s' , '%d', '%b' , '%b');";
         String order_name = "Order demo";
+        Gson gson = new Gson();
+        String order_items = gson.toJson(items);
         String query = String.format(
                 query_normal,
                 DbContract.Orders.TABLE_NAME,
@@ -105,11 +108,11 @@ public class Order {
                 userId,
                 //TODO: CHANGE TO SQLESCAPESTRING
                 DatabaseUtils.sqlEscapeString(order_name),
-                "df",        //TODO: fill in actual items names instead of ids, would be easy if we get names not ids from server.
-                "dsds",
+                order_items,        //TODO: fill in actual items names instead of ids, would be easy if we get names not ids from server.
+                dateOfOrder,
                 (int)costOfOrder,
-                1,
-                1);
+                isPaymentMade,
+                isOrderCompleted);
 
                 /*isOrderCompleted?"completed":"not completed",
                 isPaymentMade?"paid":"not paid");*/
