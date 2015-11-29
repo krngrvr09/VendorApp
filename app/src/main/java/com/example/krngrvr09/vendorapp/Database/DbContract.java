@@ -59,15 +59,17 @@ public class DbContract {
         public static final String TABLE_NAME = "orders";
         public static final String ORDER_ID = "orderId";
         public static final String USER_ID = "userId";
+        public static final String ORDER_NAME = "orderName";
         public static final String ITEMS = "items";
         public static final String TIME = "timeOfOrder";
-        public static final String COST= "cost";
+        public static final String COST = "cost";
         public static final String IS_ORDER_COMPLETED = "isOrderCompleted";
         public static final String IS_PAYMENT_DONE = "isPaymentDone";
 
         public static final String[] FULL_PROJECTION = {
                 ORDER_ID,
                 USER_ID,
+                ORDER_NAME,
                 ITEMS,
                 TIME,
                 COST,
@@ -79,12 +81,15 @@ public class DbContract {
                         + " ("
                         + ORDER_ID + INT_TYPE + PRIMARY_KEY + COMMA_SEP
                         + USER_ID + INT_TYPE + COMMA_SEP
+                        + ORDER_NAME + TEXT_TYPE + COMMA_SEP
                         + ITEMS + TEXT_TYPE + COMMA_SEP
                         + TIME + TEXT_TYPE + COMMA_SEP
                         + COST + INT_TYPE + COMMA_SEP
-                        + IS_PAYMENT_DONE + "BOOLEAN NOT NULL CHECK (" + IS_PAYMENT_DONE + " IN (0,1))"
-                        + IS_ORDER_COMPLETED + "BOOLEAN NOT NULL CHECK (" + IS_ORDER_COMPLETED + " IN (0,1))"
+                        + IS_PAYMENT_DONE + " BOOLEAN NOT NULL CHECK (" + IS_PAYMENT_DONE + " IN (0,1))"+COMMA_SEP
+                        + IS_ORDER_COMPLETED + " BOOLEAN NOT NULL CHECK (" + IS_ORDER_COMPLETED + " IN (0,1))"
                         + " );";
+        public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+
 
     }
 

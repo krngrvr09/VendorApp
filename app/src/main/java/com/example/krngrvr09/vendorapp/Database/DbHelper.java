@@ -1,7 +1,6 @@
 package com.example.krngrvr09.vendorapp.Database;
 
 import android.content.Context;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -9,42 +8,21 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by krngrvr09 on 26/10/15.
  */
 public class DbHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "vendor_database";
-    private static final String TABLE_NAME = "INVENTORY";
-    private static final String UID = "_id";
-    private static final String NAME = "Name";
-    private static final String QUANTITY = "Quantity";
-    private static final String PRICE = "Price";
-    private static final String URL = "Url";
-
-
-
-    private static final int DATABASE_VERSION = 1;
-     private static final String CREATE_TABLE="CREATE TABLE "+ TABLE_NAME +"("+UID+" INTEGER PRIMARY_KEY AUTOINCREMENT, "+NAME+" VARCHAR(255), "+QUANTITY+" INTEGER, "+PRICE+" INTEGER, "+URL+" VARCHAR(255));";
-    private static final String DROP_TABLE = "DROP TABLE IF EXISTS "+TABLE_NAME+";";
     public DbHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, DbContract.DATABASE_NAME, null, DbContract.DATABASE_VERSION);
+    }
+
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL(DbContract.Items.CREATE_TABLE);
+        db.execSQL(DbContract.Orders.CREATE_TABLE);
     }
 
     @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        try{
-            sqLiteDatabase.execSQL(CREATE_TABLE);
-        }
-        catch(SQLException e){
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        try {
-            sqLiteDatabase.execSQL(DROP_TABLE);
-            onCreate(sqLiteDatabase);
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
+    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
+        db.execSQL(DbContract.Items.DELETE_TABLE);
+        db.execSQL(DbContract.Orders.DELETE_TABLE);
 
     }
 }

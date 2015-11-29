@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.krngrvr09.vendorapp.Adapters.OrderVAdapter;
-import com.example.krngrvr09.vendorapp.Database.DatabaseOperations;
 import com.example.krngrvr09.vendorapp.Database.DbSingleton;
 import com.example.krngrvr09.vendorapp.Events.OrderDownloadDoneEvent;
 import com.example.krngrvr09.vendorapp.R;
@@ -40,7 +39,7 @@ public class OrderListFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         prepareData();
-        downloadOrders();
+//        downloadOrders();
         View view = inflater.inflate(R.layout.orders_list, container, false);
         mVerticalList = (RecyclerView) view.findViewById(R.id.rv_orders);
         mVerticalList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
