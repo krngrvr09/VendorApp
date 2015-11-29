@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.krngrvr09.vendorapp.Database.DbContract;
 import com.example.krngrvr09.vendorapp.Database.DbSingleton;
 import com.example.krngrvr09.vendorapp.Events.OrderDownloadDoneEvent;
+import com.example.krngrvr09.vendorapp.Models.Item;
 import com.example.krngrvr09.vendorapp.Models.Order;
 import com.example.krngrvr09.vendorapp.VendorApp;
 import com.example.krngrvr09.vendorapp.api.protocol.OrdersResponseList;
@@ -27,7 +28,14 @@ public class OrdersListResponseProcessor implements Callback<OrdersResponseList>
         ArrayList<String> queries = new ArrayList<String>();
         Log.d("orderesponse", String.valueOf(ordersResponseList.orders));
         for (Order order : ordersResponseList.orders) {
-
+            ArrayList<Item> items = order.getItems();
+            StringBuilder itemString = new StringBuilder();
+            itemString.append("");
+            for (Item item : items) {
+                itemString.append(item.getId());
+                itemString.append(" ,");
+            }
+            order.setItemsString(itemString.toString());
             String query = order.generateSql();
 
             Log.d("retro order", order.getOrderId() + "");
@@ -48,8 +56,6 @@ public class OrdersListResponseProcessor implements Callback<OrdersResponseList>
     public void failure(RetrofitError error) {
 
         VendorApp.postEventOnUIThread(new OrderDownloadDoneEvent(false));
-
-        //TODO: PREVENT FROM CRASHING
         Log.d("retro", error.getCause().toString());
 
     }

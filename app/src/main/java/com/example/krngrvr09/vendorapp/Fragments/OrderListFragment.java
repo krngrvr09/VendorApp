@@ -39,7 +39,7 @@ public class OrderListFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         prepareData();
-//        downloadOrders();
+        downloadOrders();
         View view = inflater.inflate(R.layout.orders_list, container, false);
         mVerticalList = (RecyclerView) view.findViewById(R.id.rv_orders);
         mVerticalList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));

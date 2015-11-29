@@ -69,7 +69,6 @@ public class DbContract {
         public static final String[] FULL_PROJECTION = {
                 ORDER_ID,
                 USER_ID,
-                ORDER_NAME,
                 ITEMS,
                 TIME,
                 COST,
@@ -81,7 +80,6 @@ public class DbContract {
                         + " ("
                         + ORDER_ID + INT_TYPE + PRIMARY_KEY + COMMA_SEP
                         + USER_ID + INT_TYPE + COMMA_SEP
-                        + ORDER_NAME + TEXT_TYPE + COMMA_SEP
                         + ITEMS + TEXT_TYPE + COMMA_SEP
                         + TIME + TEXT_TYPE + COMMA_SEP
                         + COST + INT_TYPE + COMMA_SEP
