@@ -34,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/item_name"
-        android:layout_below="@+id/menu"/>
+        android:layout_below="@+id/image"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="match_parent"

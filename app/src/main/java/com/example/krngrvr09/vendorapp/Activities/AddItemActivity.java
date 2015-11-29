@@ -183,7 +183,7 @@ public class AddItemActivity extends AppCompatActivity {
         } else if (ActivityCompat.checkSelfPermission(AddItemActivity.this, Manifest.permission_group.STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestStoragePermissions();
         }
-        setContentView(R.layout.activity_add_item_2);
+        setContentView(R.layout.activity_add_item_3);
         mLayout = findViewById(R.id.add_item_view);
 //        final EditText add_name = (EditText) findViewById(R.id.add_name);
 //        final EditText add_price = (EditText) findViewById(R.id.add_price);
