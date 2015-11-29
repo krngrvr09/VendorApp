@@ -59,7 +59,6 @@ public class DbContract {
         public static final String TABLE_NAME = "orders";
         public static final String ORDER_ID = "orderId";
         public static final String USER_ID = "userId";
-        public static final String ORDER_NAME = "orderName";
         public static final String ITEMS = "items";
         public static final String TIME = "timeOfOrder";
         public static final String COST = "cost";
@@ -69,7 +68,6 @@ public class DbContract {
         public static final String[] FULL_PROJECTION = {
                 ORDER_ID,
                 USER_ID,
-                ORDER_NAME,
                 ITEMS,
                 TIME,
                 COST,
@@ -81,7 +79,6 @@ public class DbContract {
                         + " ("
                         + ORDER_ID + INT_TYPE + PRIMARY_KEY + COMMA_SEP
                         + USER_ID + INT_TYPE + COMMA_SEP
-                        + ORDER_NAME + TEXT_TYPE + COMMA_SEP
                         + ITEMS + TEXT_TYPE + COMMA_SEP
                         + TIME + TEXT_TYPE + COMMA_SEP
                         + COST + INT_TYPE + COMMA_SEP

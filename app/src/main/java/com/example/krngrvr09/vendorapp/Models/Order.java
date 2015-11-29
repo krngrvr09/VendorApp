@@ -1,6 +1,5 @@
 package com.example.krngrvr09.vendorapp.Models;
 
-import android.database.DatabaseUtils;
 import android.util.Log;
 
 import com.example.krngrvr09.vendorapp.Database.DbContract;
@@ -29,6 +28,7 @@ public class Order {
     Boolean isOrderCompleted;
     @SerializedName("payment_status")
     Boolean isPaymentMade;
+    String itemsString;
 
     public Order(int orderId, int userId, ArrayList<Item> items, String dateOfOrder, double costOfOrder, Boolean isOrderCompleted, Boolean isPaymentMade) {
         this.orderId = orderId;
@@ -38,6 +38,14 @@ public class Order {
         this.costOfOrder = costOfOrder;
         this.isOrderCompleted = isOrderCompleted;
         this.isPaymentMade = isPaymentMade;
+    }
+
+    public String getItemsString() {
+        return itemsString;
+    }
+
+    public void setItemsString(String itemsString) {
+        this.itemsString = itemsString;
     }
 
     public int getOrderId() {
@@ -97,25 +105,21 @@ public class Order {
     }
 
     public String generateSql() {
-        String query_normal = "INSERT INTO %s VALUES ('%d', '%d', %s, '%s' , '%s' , '%d', '%b' , '%b');";
+        String query_normal = "INSERT INTO %s VALUES ('%d', '%d', '%s' , '%s' , '%d', '%d' , '%d');";
         String order_name = "Order demo";
         Gson gson = new Gson();
-        String order_items = gson.toJson(items);
-//        order_items = "[{'name':'pav bhaji','id':3,'price':40,'quantity':30,'rating':0}]";
         String query = String.format(
                 query_normal,
                 DbContract.Orders.TABLE_NAME,
                 orderId,
                 userId,
-                //TODO: CHANGE TO SQLESCAPESTRING
-                DatabaseUtils.sqlEscapeString(order_name),
-                order_items,        //TODO: fill in actual items names instead of ids, would be easy if we get names not ids from server.
+                getItemsString(),        //TODO: fill in actual items names instead of ids, would be easy if we get names not ids from server.
                 dateOfOrder,
-                20,
-                1,
-                1);
+                (int) costOfOrder,
+                (isPaymentMade) ? 1 : 0,
+                (isOrderCompleted) ? 1 : 0);
 
-//        Log.d("query order", query);
+        Log.d("query order", ((isPaymentMade) ? 1 : 0)+"");
         return query;
     }
 
