@@ -69,7 +69,8 @@
         </activity>
         <activity
             android:name=".Activities.AddItemActivity"
-            android:label="@string/title_activity_add_item" >
+            android:label="@string/title_activity_add_item"
+            android:theme="@style/ActionBarTheme">
         </activity>
     </application>
 

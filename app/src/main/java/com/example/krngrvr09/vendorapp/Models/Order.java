@@ -101,6 +101,7 @@ public class Order {
         String order_name = "Order demo";
         Gson gson = new Gson();
         String order_items = gson.toJson(items);
+//        order_items = "[{'name':'pav bhaji','id':3,'price':40,'quantity':30,'rating':0}]";
         String query = String.format(
                 query_normal,
                 DbContract.Orders.TABLE_NAME,
@@ -110,11 +111,11 @@ public class Order {
                 DatabaseUtils.sqlEscapeString(order_name),
                 order_items,        //TODO: fill in actual items names instead of ids, would be easy if we get names not ids from server.
                 dateOfOrder,
-                (int)costOfOrder,
-                isPaymentMade,
-                isOrderCompleted);
+                20,
+                1,
+                1);
 
-        Log.d("query order", query);
+//        Log.d("query order", query);
         return query;
     }
 

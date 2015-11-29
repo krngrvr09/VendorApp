@@ -85,8 +85,8 @@ public class DbContract {
                         + ITEMS + TEXT_TYPE + COMMA_SEP
                         + TIME + TEXT_TYPE + COMMA_SEP
                         + COST + INT_TYPE + COMMA_SEP
-                        + IS_PAYMENT_DONE + " BOOLEAN NOT NULL CHECK (" + IS_PAYMENT_DONE + " IN (0,1))"+COMMA_SEP
-                        + IS_ORDER_COMPLETED + " BOOLEAN NOT NULL CHECK (" + IS_ORDER_COMPLETED + " IN (0,1))"
+                        + IS_PAYMENT_DONE + INT_TYPE+COMMA_SEP
+                        + IS_ORDER_COMPLETED + INT_TYPE
                         + " );";
         public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
 

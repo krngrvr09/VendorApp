@@ -183,85 +183,86 @@ public class AddItemActivity extends AppCompatActivity {
         } else if (ActivityCompat.checkSelfPermission(AddItemActivity.this, Manifest.permission_group.STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestStoragePermissions();
         }
-        setContentView(R.layout.activity_add_item);
+        setContentView(R.layout.activity_add_item_2);
         mLayout = findViewById(R.id.add_item_view);
-        final EditText add_name = (EditText) findViewById(R.id.add_name);
-        final EditText add_price = (EditText) findViewById(R.id.add_price);
-        final EditText add_quantity = (EditText) findViewById(R.id.add_quantity);
-        take_photo = (Button) findViewById(R.id.take_photo);
-        select_from_galary = (Button) findViewById(R.id.select_from_galary);
+//        final EditText add_name = (EditText) findViewById(R.id.add_name);
+//        final EditText add_price = (EditText) findViewById(R.id.add_price);
+//        final EditText add_quantity = (EditText) findViewById(R.id.add_quantity);
+//        take_photo = (Button) findViewById(R.id.take_photo);
+//        select_from_galary = (Button) findViewById(R.id.select_from_galary);
         image = (ImageView) findViewById(R.id.image);
-        Button add_item = (Button) findViewById(R.id.add_this_item);
-        select_from_galary.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, ""), PICK_IMAGE);
-
-            }
-        });
-
-        take_photo.setOnClickListener(new View.OnClickListener() {
-
-                                          @Override
-                                          public void onClick(View v) {
-                                              Log.d(TAG, "else");
-                                              Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                              intent.putExtra(MediaStore.EXTRA_OUTPUT, setImageUri());
-                                              startActivityForResult(intent, CAPTURE_IMAGE);
-
-                                          }
-                                      }
-
-        );
-
-        add_item.setOnClickListener(new View.OnClickListener()
-
-                                    {
-                                        @Override
-                                        public void onClick(View view) {
-                                            String name = String.valueOf(add_name.getText());
-                                            String price = String.valueOf(add_price.getText());
-                                            String quantity = String.valueOf(add_quantity.getText());
-                                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                            Bitmap bm;
-                                            try {
-                                                bm = MediaStore.Images.Media.getBitmap(getContentResolver(), imagePath);
-                                                bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
-                                                byte[] b = baos.toByteArray();
-                                                String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
-                                                Item item = new Item(name, 0, "fb", Integer.parseInt(price), Integer.parseInt(quantity), encodedImage, 0);
-                                                APIClient apiClient = new APIClient();
-                                                apiClient.getmApi().createItem(item, new Callback<newItemResponse>() {
-                                                    @Override
-                                                    public void success(newItemResponse s, Response response) {
-                                                        Log.d("new item", "success");
-
-                                                    }
-
-                                                    @Override
-                                                    public void failure(RetrofitError error) {
-                                                        Log.d("new item", error.getCause().toString());
-
-                                                    }
-                                                });
-                                            } catch (IOException e) {
-                                                e.printStackTrace();
-                                            }
-//                Log.d("hahaname", name);
-//                Log.d("hahaprice", String.valueOf(Integer.parseInt(price)));
-//                Log.d("hahaprice1", String.valueOf(price));
-//                Log.d("hahaquantity", String.valueOf(Integer.parseInt(quantity)));
-//                Log.d("hahaquantity1", String.valueOf(quantity));
-
-
-                                        }
-                                    }
-
-        );
+        Picasso.with(getApplicationContext()).load(R.drawable.default_image).fit().centerCrop().into(image);
+//        Button add_item = (Button) findViewById(R.id.add_this_item);
+//        select_from_galary.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent();
+//                intent.setType("image/*");
+//                intent.setAction(Intent.ACTION_GET_CONTENT);
+//                startActivityForResult(Intent.createChooser(intent, ""), PICK_IMAGE);
+//
+//            }
+//        });
+//
+//        take_photo.setOnClickListener(new View.OnClickListener() {
+//
+//                                          @Override
+//                                          public void onClick(View v) {
+//                                              Log.d(TAG, "else");
+//                                              Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                                              intent.putExtra(MediaStore.EXTRA_OUTPUT, setImageUri());
+//                                              startActivityForResult(intent, CAPTURE_IMAGE);
+//
+//                                          }
+//                                      }
+//
+//        );
+//
+//        add_item.setOnClickListener(new View.OnClickListener()
+//
+//                                    {
+//                                        @Override
+//                                        public void onClick(View view) {
+//                                            String name = String.valueOf(add_name.getText());
+//                                            String price = String.valueOf(add_price.getText());
+//                                            String quantity = String.valueOf(add_quantity.getText());
+//                                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                                            Bitmap bm;
+//                                            try {
+//                                                bm = MediaStore.Images.Media.getBitmap(getContentResolver(), imagePath);
+//                                                bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+//                                                byte[] b = baos.toByteArray();
+//                                                String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+//                                                Item item = new Item(name, 0, "fb", Integer.parseInt(price), Integer.parseInt(quantity), encodedImage, 0);
+//                                                APIClient apiClient = new APIClient();
+//                                                apiClient.getmApi().createItem(item, new Callback<newItemResponse>() {
+//                                                    @Override
+//                                                    public void success(newItemResponse s, Response response) {
+//                                                        Log.d("new item", "success");
+//
+//                                                    }
+//
+//                                                    @Override
+//                                                    public void failure(RetrofitError error) {
+//                                                        Log.d("new item", error.getCause().toString());
+//
+//                                                    }
+//                                                });
+//                                            } catch (IOException e) {
+//                                                e.printStackTrace();
+//                                            }
+////                Log.d("hahaname", name);
+////                Log.d("hahaprice", String.valueOf(Integer.parseInt(price)));
+////                Log.d("hahaprice1", String.valueOf(price));
+////                Log.d("hahaquantity", String.valueOf(Integer.parseInt(quantity)));
+////                Log.d("hahaquantity1", String.valueOf(quantity));
+//
+//
+//                                        }
+//                                    }
+//
+//        );
 
     }
 

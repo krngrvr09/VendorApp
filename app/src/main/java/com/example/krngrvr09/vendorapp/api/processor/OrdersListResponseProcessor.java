@@ -32,7 +32,7 @@ public class OrdersListResponseProcessor implements Callback<OrdersResponseList>
 
             Log.d("retro order", order.getOrderId() + "");
             queries.add(query);
-            Log.d(TAG, query);
+//            Log.d(TAG, query);
         }
 
         DbSingleton dbSingleton = DbSingleton.getInstance();
