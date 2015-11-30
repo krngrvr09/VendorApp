@@ -7,5 +7,8 @@
     <string name="permission_camera_rationale">Camera is required to capture new item images</string>
     <string name="permission_storage_rationale">Write external Storage is required to store new item images</string>
     <string name="ok">OK</string>
-    <string name="gcm_defaultSenderId">1053716497536</string>        //This is the key to be used to generate gcm token
+    <string name="gcm_defaultSenderId">1053716497536</string>
+    <string name="download_complete">Download Complete</string>
+    <string name="download_not_done">Having troubles Connecting to server  </string>
+    //This is the key to be used to generate gcm token
 </resources>

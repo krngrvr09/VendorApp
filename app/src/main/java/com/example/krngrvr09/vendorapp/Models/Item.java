@@ -12,8 +12,8 @@ import com.google.gson.annotations.SerializedName;
 public class Item {
     String name;
     @SerializedName("id")
-    private int id;
-    private String contents;
+    int id;
+    String contents;
     int price;
     int quantity;
     @SerializedName("image")
@@ -93,14 +93,12 @@ public class Item {
         String query_normal = "INSERT INTO %s VALUES ('%d', %s, '%f', '%s', '%s','%f','%f','%f');";
         //TODO: Change image, contains in query
 
-        String Image = "http://globe-views.com/dcim/dreams/food/food-06.jpg";
-        String contents = "Abc";
         String query = String.format(
                 query_normal,
                 DbContract.Items.TABLE_NAME,
                 id,
                 DatabaseUtils.sqlEscapeString(name),
-                Image,
+                image_url,
                 contents,
                 price,
                 rating,

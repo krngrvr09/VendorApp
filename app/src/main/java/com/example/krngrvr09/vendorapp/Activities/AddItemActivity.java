@@ -1,6 +1,5 @@
 package com.example.krngrvr09.vendorapp.Activities;
 
-import android.app.ActionBar;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
@@ -11,37 +10,23 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
-import com.example.krngrvr09.vendorapp.Database.DbContract;
-import com.example.krngrvr09.vendorapp.Database.DbSingleton;
-import com.example.krngrvr09.vendorapp.Models.Item;
+
 import com.example.krngrvr09.vendorapp.R;
-import com.example.krngrvr09.vendorapp.api.APIClient;
-import com.example.krngrvr09.vendorapp.api.protocol.newItemResponse;
 import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 
 public class AddItemActivity extends AppCompatActivity {

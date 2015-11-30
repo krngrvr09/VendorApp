@@ -65,7 +65,7 @@ public class OrdersListResponseProcessor implements Callback<OrdersResponseList>
     public void failure(RetrofitError error) {
 
         VendorApp.postEventOnUIThread(new OrderDownloadDoneEvent(false));
-        Log.d("retro", error.getCause().toString());
+//        Log.d("retro", error.getCause().toString());
 
     }
 }

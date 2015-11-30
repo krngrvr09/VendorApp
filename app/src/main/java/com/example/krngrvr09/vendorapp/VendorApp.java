@@ -3,6 +3,7 @@ package com.example.krngrvr09.vendorapp;
 import android.app.Application;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.example.krngrvr09.vendorapp.Database.DbSingleton;
 import com.squareup.otto.Bus;
@@ -33,6 +34,7 @@ public class VendorApp extends Application {
     public void onCreate() {
         super.onCreate();
         DbSingleton.init(this);
+        Log.d("download", "db");
     }
 
 }

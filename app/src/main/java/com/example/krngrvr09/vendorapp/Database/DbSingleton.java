@@ -2,6 +2,7 @@ package com.example.krngrvr09.vendorapp.Database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.krngrvr09.vendorapp.Models.Item;
 import com.example.krngrvr09.vendorapp.Models.Order;
@@ -26,12 +27,15 @@ public class DbSingleton {
     private DbSingleton(Context context) {
         mContext = context;
         mDbHelper = new DbHelper(mContext);
+        Log.d("download3", "db");
+
 
     }
 
     public static void init(Context context) {
         if (mInstance == null) {
             mInstance = new DbSingleton(context);
+            Log.d("download1", "db");
         }
     }
 

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -28,7 +29,10 @@ import android.widget.TextView;
 import com.example.krngrvr09.vendorapp.Adapters.CustomBaseAdapter;
 import com.example.krngrvr09.vendorapp.Adapters.ViewPagerAdapter;
 import com.example.krngrvr09.vendorapp.Database.DbHelper;
+import com.example.krngrvr09.vendorapp.Events.CounterEvent;
+import com.example.krngrvr09.vendorapp.Events.ItemDownloadDoneEvent;
 import com.example.krngrvr09.vendorapp.Events.OrderDownloadDoneEvent;
+import com.example.krngrvr09.vendorapp.Events.RefreshUiEvent;
 import com.example.krngrvr09.vendorapp.Fragments.AddItemsFragment;
 import com.example.krngrvr09.vendorapp.Fragments.CompletedOrderFragment;
 import com.example.krngrvr09.vendorapp.Fragments.OrderListFragment;
@@ -36,10 +40,12 @@ import com.example.krngrvr09.vendorapp.Helpers.DataDownload;
 import com.example.krngrvr09.vendorapp.Models.Item;
 import com.example.krngrvr09.vendorapp.R;
 import com.example.krngrvr09.vendorapp.Services.QuickstartPreferences;
+import com.example.krngrvr09.vendorapp.Services.RegistrationIntentService;
 import com.example.krngrvr09.vendorapp.VendorApp;
 import com.example.krngrvr09.vendorapp.api.APIClient;
 import com.example.krngrvr09.vendorapp.api.processor.OrdersListResponseProcessor;
 import com.github.clans.fab.FloatingActionButton;
+import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -47,14 +53,20 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     static final int NUM_ITEMS = 3;
     DbHelper dbHelper;
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+    private int counter;
+    private int eventsDone;
+    private View view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
-        dbHelper = new DbHelper(this);
 
+        setContentView(R.layout.activity_main);
+        view = findViewById(R.id.mainFrame);
+        counter = 0;
+        eventsDone = 0;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -65,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mPager);
         DataDownload download = new DataDownload();
-        download.downloadItems();
         download.downloadOrders();
 
         final CheckBox checkBox = (CheckBox) findViewById(R.id.checkbox);
@@ -73,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         //TODO: uncomment this gcm part
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if(sharedPreferences.getString(QuickstartPreferences.REGISTRATION_TOKEN,"").equals("")) {
+        if (sharedPreferences.getString(QuickstartPreferences.REGISTRATION_TOKEN, "").equals("")) {
 
             mRegistrationBroadcastReceiver = new BroadcastReceiver() {
                 @Override
@@ -95,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
     }
 
     @Override
@@ -112,20 +122,47 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void syncComplete() {
+        Bus bus = VendorApp.getEventBus();
+        bus.post(new RefreshUiEvent());
+        Snackbar.make(view, getString(R.string.download_complete), Snackbar.LENGTH_SHORT).show();
+    }
+
     @Subscribe
     public void OrderDownloadDone(OrderDownloadDoneEvent event) {
-//        Log.d("retro event", eventsDone + " " + counter);
+        Log.d("retroevent", eventsDone + " " + counter);
 
         if (event.isState()) {
-//            eventsDone++;
-            Log.d("retro event", "is state true");
+            eventsDone++;
+            Log.d("retroevent", counter + "  " +eventsDone);
 
-//            if (counter == eventsDone) {
-//                syncComplete();
-//            }
+            if (counter == eventsDone) {
+                syncComplete();
+            }
 
         } else {
-            Log.d("retro event", "is state false");
+            Log.d("retroevent", "is state false");
+            Snackbar.make(view, getString(R.string.download_not_done), Snackbar.LENGTH_SHORT).show();
+
+//            downloadFailed();
+        }
+
+    }
+    @Subscribe
+    public void ItemsDownloadDone(ItemDownloadDoneEvent event) {
+        Log.d("retroevent", eventsDone + " " + counter);
+
+        if (event.isState()) {
+            eventsDone++;
+            Log.d("retroevent", counter + "  " +eventsDone);
+
+            if (counter == eventsDone) {
+                syncComplete();
+            }
+
+        } else {
+            Log.d("retroevent", "is state false");
+            Snackbar.make(view, getString(R.string.download_not_done), Snackbar.LENGTH_SHORT).show();
 
 //            downloadFailed();
         }
@@ -279,5 +316,12 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new CompletedOrderFragment(), "Completed Orders");
         adapter.addFragment(new AddItemsFragment(), "Add New Items");
         viewPager.setAdapter(adapter);
+    }
+
+    @Subscribe
+    public void counterFunction(CounterEvent event) {
+        Log.d("download counter", event.getRequestsCount() + "");
+        counter = event.getRequestsCount();
+
     }
 }

@@ -43,6 +43,7 @@ public class ItemsListResponseProcessor implements Callback<ItemsResponseList> {
                 dbSingleton.insertQueries(queries);
 
                 VendorApp.postEventOnUIThread(new ItemDownloadDoneEvent(true));
+                Log.d("download ", "item");
             }
         });
 
