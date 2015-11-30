@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void syncComplete() {
+
         Bus bus = VendorApp.getEventBus();
         bus.post(new RefreshUiEvent());
         Snackbar.make(view, getString(R.string.download_complete), Snackbar.LENGTH_SHORT).show();
