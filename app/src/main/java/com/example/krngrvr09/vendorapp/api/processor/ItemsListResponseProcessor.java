@@ -5,7 +5,6 @@ import android.util.Log;
 import com.example.krngrvr09.vendorapp.Database.DbContract;
 import com.example.krngrvr09.vendorapp.Database.DbSingleton;
 import com.example.krngrvr09.vendorapp.Events.ItemDownloadDoneEvent;
-import com.example.krngrvr09.vendorapp.Helpers.CommonTaskLoop;
 import com.example.krngrvr09.vendorapp.Models.Item;
 import com.example.krngrvr09.vendorapp.VendorApp;
 import com.example.krngrvr09.vendorapp.api.protocol.ItemsResponseList;
@@ -25,29 +24,25 @@ public class ItemsListResponseProcessor implements Callback<ItemsResponseList> {
     @Override
     public void success(final ItemsResponseList itemsResponseList, Response response) {
 
-        CommonTaskLoop.getInstance().post(new Runnable() {
-            @Override
-            public void run() {
-                Log.d("retro", "success");
-                ArrayList<String> queries = new ArrayList<String>();
+        Log.d("retro", "success");
+        ArrayList<String> queries = new ArrayList<String>();
 
-                for (Item item : itemsResponseList.items) {
-                    String query = item.generateSql();
-                    Log.d("retro item", item.getId() + "");
-                    queries.add(query);
-                    Log.d(TAG, query);
-                }
+        for (Item item : itemsResponseList.items) {
+            String query = item.generateSql();
+            Log.d("retro item", item.getId() + "");
+            queries.add(query);
+            Log.d(TAG, query);
+        }
 
-                DbSingleton dbSingleton = DbSingleton.getInstance();
-                dbSingleton.clearDatabase(DbContract.Items.TABLE_NAME);
-                dbSingleton.insertQueries(queries);
+        DbSingleton dbSingleton = DbSingleton.getInstance();
+        dbSingleton.clearDatabase(DbContract.Items.TABLE_NAME);
+        dbSingleton.insertQueries(queries);
 
-                VendorApp.postEventOnUIThread(new ItemDownloadDoneEvent(true));
-                Log.d("download ", "item");
-            }
-        });
-
+        VendorApp.postEventOnUIThread(new ItemDownloadDoneEvent(true));
+        Log.d("download ", "item");
     }
+
+
 
 
     @Override

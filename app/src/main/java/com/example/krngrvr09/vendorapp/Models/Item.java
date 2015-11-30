@@ -31,7 +31,6 @@ public class Item {
     }
 
 
-
     public String getName() {
         return name;
     }
@@ -90,19 +89,19 @@ public class Item {
 
 
     public String generateSql() {
-        String query_normal = "INSERT INTO %s VALUES ('%d', %s, '%f', '%s', '%s','%f','%f','%f');";
+        String query_normal = "INSERT INTO %s VALUES ('%d', %s, '%d', '%s', '%s', '%d','%d','%d');";
         //TODO: Change image, contains in query
 
         String query = String.format(
                 query_normal,
                 DbContract.Items.TABLE_NAME,
                 id,
-                DatabaseUtils.sqlEscapeString(name),
-                image_url,
-                contents,
+                DatabaseUtils.sqlEscapeString(name + ""),
+                quantity,
+                "ss",
+                contents + "",
                 price,
-                rating,
-                quantity);
+                rating, quantity);
         Log.d("query item", query);
         return query;
     }

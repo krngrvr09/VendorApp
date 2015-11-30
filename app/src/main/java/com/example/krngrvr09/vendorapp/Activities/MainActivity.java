@@ -28,7 +28,6 @@ import android.widget.TextView;
 
 import com.example.krngrvr09.vendorapp.Adapters.CustomBaseAdapter;
 import com.example.krngrvr09.vendorapp.Adapters.ViewPagerAdapter;
-import com.example.krngrvr09.vendorapp.Database.DbHelper;
 import com.example.krngrvr09.vendorapp.Events.CounterEvent;
 import com.example.krngrvr09.vendorapp.Events.ItemDownloadDoneEvent;
 import com.example.krngrvr09.vendorapp.Events.OrderDownloadDoneEvent;
@@ -52,7 +51,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     static final int NUM_ITEMS = 3;
-    DbHelper dbHelper;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private int counter;
     private int eventsDone;
@@ -77,7 +75,8 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mPager);
         DataDownload download = new DataDownload();
-        download.downloadOrders();
+//        download.downloadItems();
+        download.downloadAll();
 
         final CheckBox checkBox = (CheckBox) findViewById(R.id.checkbox);
 
