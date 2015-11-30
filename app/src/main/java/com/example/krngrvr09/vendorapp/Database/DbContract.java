@@ -45,7 +45,7 @@ public class DbContract {
                         + ITEM_ID + INT_TYPE + PRIMARY_KEY + COMMA_SEP
                         + ITEM_NAME + TEXT_TYPE + COMMA_SEP
                         + QUANTITY_ORDERED + REAL_TYPE + COMMA_SEP
-                        + IMAGE_URL + TEXT_TYPE + COMMA_SEP
+                        + IMAGE_URL + " BLOB" + COMMA_SEP
                         + CONTENTS + TEXT_TYPE + COMMA_SEP
                         + PRICE + REAL_TYPE + COMMA_SEP
                         + RATING + REAL_TYPE + COMMA_SEP
