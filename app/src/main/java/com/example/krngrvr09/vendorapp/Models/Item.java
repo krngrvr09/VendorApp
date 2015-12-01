@@ -1,9 +1,6 @@
 package com.example.krngrvr09.vendorapp.Models;
 
 import android.database.DatabaseUtils;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
 import android.util.Log;
 
 import com.example.krngrvr09.vendorapp.Database.DbContract;
@@ -95,15 +92,13 @@ public class Item {
         String query_normal = "INSERT INTO %s VALUES ('%d', %s, '%d', '%s', '%s', '%d','%d','%d');";
         //TODO: Change image, contains in query
 
-        byte[] decodedString = Base64.decode(image_url, Base64.DEFAULT);
-        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         String query = String.format(
                 query_normal,
                 DbContract.Items.TABLE_NAME,
                 id,
                 DatabaseUtils.sqlEscapeString(name + ""),
                 quantity,
-                decodedByte,
+                "",
                 contents + "",
                 price,
                 rating, quantity);
