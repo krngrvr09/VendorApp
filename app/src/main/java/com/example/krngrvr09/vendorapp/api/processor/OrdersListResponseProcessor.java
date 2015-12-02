@@ -31,19 +31,19 @@ public class OrdersListResponseProcessor implements Callback<OrdersResponseList>
             ArrayList<Item> items = order.getItems();
             if (!items.isEmpty()) {
                 StringBuilder itemString = new StringBuilder();
-                itemString.append(items.get(0));
+                itemString.append(items.get(0).getId());
                 items.remove(0);
 
                 for (Item item : items) {
-                    itemString.append(item.getId()).append("  ").append(order.getOrderId());
                     itemString.append(" ,");
+                    itemString.append(item.getId());
+
+                    Log.d("qwer", itemString.toString());
 
                 }
-                Log.d("qwer", itemString.toString());
 
                 order.setItemsString(itemString.toString());
                 String query = order.generateSql();
-
                 queries.add(query);
             }
         }

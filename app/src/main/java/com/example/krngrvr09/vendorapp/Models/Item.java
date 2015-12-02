@@ -1,7 +1,6 @@
 package com.example.krngrvr09.vendorapp.Models;
 
 import android.database.DatabaseUtils;
-import android.util.Log;
 
 import com.example.krngrvr09.vendorapp.Database.DbContract;
 import com.google.gson.annotations.SerializedName;
@@ -98,11 +97,11 @@ public class Item {
                 id,
                 DatabaseUtils.sqlEscapeString(name + ""),
                 quantity,
-                "",
+                image_url,
                 contents + "",
                 price,
-                rating, quantity);
-        Log.d("query item", query);
+                rating,
+                quantity);
         return query;
     }
 }

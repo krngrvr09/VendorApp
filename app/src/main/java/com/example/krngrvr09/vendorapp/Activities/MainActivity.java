@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(mPager);
         DataDownload download = new DataDownload();
 //        download.downloadItems();
-        download.downloadAll();
+        download.downloadOrders();
 
         final CheckBox checkBox = (CheckBox) findViewById(R.id.checkbox);
 

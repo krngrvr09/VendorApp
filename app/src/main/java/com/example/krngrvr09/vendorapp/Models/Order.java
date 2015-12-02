@@ -1,5 +1,6 @@
 package com.example.krngrvr09.vendorapp.Models;
 
+import android.database.DatabaseUtils;
 import android.util.Log;
 
 import com.example.krngrvr09.vendorapp.Database.DbContract;
@@ -105,7 +106,7 @@ public class Order {
     }
 
     public String generateSql() {
-        String query_normal = "INSERT INTO %s VALUES ('%d', '%d', '%s' , '%s' , '%d', '%d' , '%d');";
+        String query_normal = "INSERT INTO %s VALUES ('%d', '%d', %s , '%s' , '%d', '%d' , '%d');";
         String order_name = "Order demo";
         Gson gson = new Gson();
         String query = String.format(
@@ -113,13 +114,13 @@ public class Order {
                 DbContract.Orders.TABLE_NAME,
                 orderId,
                 userId,
-                getItemsString(),        //TODO: fill in actual items names instead of ids, would be easy if we get names not ids from server.
+                DatabaseUtils.sqlEscapeString(getItemsString()),        //TODO: fill in actual items names instead of ids, would be easy if we get names not ids from server.
                 dateOfOrder,
                 (int) costOfOrder,
                 (isPaymentMade) ? 1 : 0,
                 (isOrderCompleted) ? 1 : 0);
 
-        Log.d("query order", ((isPaymentMade) ? 1 : 0)+"");
+        Log.d("query order", ((isPaymentMade) ? 1 : 0) + "");
         return query;
     }
 
