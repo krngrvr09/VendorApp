@@ -12,7 +12,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -94,18 +93,18 @@ public class DatabaseOperations {
                     order_items,
                     cur.getString(cur.getColumnIndex(DbContract.Orders.TIME)),
                     cur.getInt(cur.getColumnIndex(DbContract.Orders.COST)),
-                    cur.getInt(cur.getColumnIndex(DbContract.Orders.IS_ORDER_COMPLETED))>0 ,
-                    cur.getInt(cur.getColumnIndex(DbContract.Orders.IS_PAYMENT_DONE)) >0);
+                    cur.getInt(cur.getColumnIndex(DbContract.Orders.IS_ORDER_COMPLETED)) > 0,
+                    cur.getInt(cur.getColumnIndex(DbContract.Orders.IS_PAYMENT_DONE)) > 0);
             orders.add(temp);
-//            cur.moveToNext();
+            cur.moveToNext();
         }
         cur.close();
         return orders;
     }
 
     public ArrayList<Order> getPendingOrderList(SQLiteDatabase mDb) {
-        String selection = DbContract.Orders.IS_PAYMENT_DONE + EQUAL + " '0' or ("+ DbContract.Orders.IS_PAYMENT_DONE + EQUAL +
-                " '1' and "+ DbContract.Orders.IS_ORDER_COMPLETED + EQUAL + " '0')";
+        String selection = DbContract.Orders.IS_PAYMENT_DONE + EQUAL + " '0' or (" + DbContract.Orders.IS_PAYMENT_DONE + EQUAL +
+                " '1' and " + DbContract.Orders.IS_ORDER_COMPLETED + EQUAL + " '0')";
 
         String sortOrder = DbContract.Orders.ORDER_ID + ASCENDING;
         Cursor cur = mDb.query(
@@ -121,25 +120,67 @@ public class DatabaseOperations {
         ArrayList<Order> orders = new ArrayList<>();
         Order temp;
 
+        ArrayList<Item> itemsInOrder = new ArrayList<>();
+
         cur.moveToFirst();
         while (!cur.isAfterLast()) {
+            String[] itemIdsStringArray = cur.getString(cur.getColumnIndex(DbContract.Orders.ITEMS)).split(",");
+            for (String s : itemIdsStringArray) {
+                String selectionItem = DbContract.Items.ITEM_ID + EQUAL + Integer.valueOf(s);
+                Log.d("abc3", selectionItem);
+
+                String sortItem = DbContract.Items.ITEM_ID + ASCENDING;
+                Cursor curItem = mDb.query(
+                        DbContract.Items.TABLE_NAME,
+                        DbContract.Items.FULL_PROJECTION,
+                        selectionItem,
+                        null,
+                        null,
+                        null,
+                        sortItem
+                );
+                Log.d("abc2", itemsInOrder.size() + " " + curItem.getCount());
+
+                curItem.moveToFirst();
+                while (!curItem.isAfterLast()) {
+                    Log.d("abc2", itemsInOrder.size() + "");
+
+                    Item item;
+                    item = new Item(
+                            curItem.getString(curItem.getColumnIndex(DbContract.Items.ITEM_NAME)),
+                            curItem.getInt(curItem.getColumnIndex(DbContract.Items.ITEM_ID)),
+                            curItem.getString(curItem.getColumnIndex(DbContract.Items.CONTENTS)),
+                            curItem.getInt(curItem.getColumnIndex(DbContract.Items.PRICE)),
+                            curItem.getInt(curItem.getColumnIndex(DbContract.Items.QUANTITY_ORDERED)),
+                            curItem.getString(curItem.getColumnIndex(DbContract.Items.IMAGE_URL)),
+                            curItem.getInt(curItem.getColumnIndex(DbContract.Items.RATING)));
+                    itemsInOrder.add(item);
+                    Log.d("abc2", itemsInOrder.size() + "");
+                    curItem.moveToNext();
+                }
+                curItem.close();
+            }
+
+
             temp = new Order(
                     cur.getInt(cur.getColumnIndex(DbContract.Orders.ORDER_ID)),
                     cur.getInt(cur.getColumnIndex(DbContract.Orders.USER_ID)),
-                    null,                                                       //HAVE TO CREATE ARRAYLIST OF ITEMS IN ORDER OURSELVES
+                    itemsInOrder,
                     cur.getString(cur.getColumnIndex(DbContract.Orders.TIME)),
                     cur.getInt(cur.getColumnIndex(DbContract.Orders.COST)),
-                    cur.getInt(cur.getColumnIndex(DbContract.Orders.IS_ORDER_COMPLETED))>0,
-                    cur.getInt(cur.getColumnIndex(DbContract.Orders.IS_PAYMENT_DONE))>0);
+                    cur.getInt(cur.getColumnIndex(DbContract.Orders.IS_ORDER_COMPLETED)) > 0,
+                    cur.getInt(cur.getColumnIndex(DbContract.Orders.IS_PAYMENT_DONE)) > 0);
             orders.add(temp);
+            Log.d("abc1", temp.getItems().size() + "");
+
             cur.moveToNext();
         }
         cur.close();
         return orders;
     }
 
-    public Item getItemById(SQLiteDatabase mDb,int itemId){
-        String selection = DbContract.Items.ITEM_ID + EQUAL + " '" + itemId +"' ";
+    public Item getItemById(SQLiteDatabase mDb, int itemId) {
+        String selection = DbContract.Items.ITEM_ID + EQUAL + " '" + itemId + "' ";
         String sortOrder = DbContract.Items.ITEM_ID + ASCENDING;
         Cursor cur = mDb.query(
                 DbContract.Items.TABLE_NAME,
@@ -153,7 +194,7 @@ public class DatabaseOperations {
         ArrayList<Item> items = new ArrayList<>();
         Item temp;
         cur.moveToFirst();
-        while(!cur.isAfterLast()){
+        while (!cur.isAfterLast()) {
             temp = new Item(
                     cur.getString(cur.getColumnIndex(DbContract.Items.ITEM_NAME)),
                     itemId,
@@ -162,11 +203,11 @@ public class DatabaseOperations {
                     cur.getInt(cur.getColumnIndex(DbContract.Items.QUANTITY_AVAILABLE)),
                     cur.getString(cur.getColumnIndex(DbContract.Items.IMAGE_URL)),
                     cur.getInt((cur.getColumnIndex(DbContract.Items.RATING)))
-                    );
+            );
             items.add(temp);
         }
         cur.close();
-        if(items.size()>0)
+        if (items.size() > 0)
             return items.get(0);
         else
             return null;

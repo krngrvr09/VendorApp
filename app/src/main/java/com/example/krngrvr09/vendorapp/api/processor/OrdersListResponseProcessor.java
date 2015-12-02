@@ -42,9 +42,8 @@ public class OrdersListResponseProcessor implements Callback<OrdersResponseList>
                 order.setItemsString(itemString.toString());
 
             } else {
-                if (items.equals(null)) {
-                    order.setItemsString(" ");
-                }
+                order.setItemsString(" ");
+
             }
             String query = order.generateSql();
             queries.add(query);

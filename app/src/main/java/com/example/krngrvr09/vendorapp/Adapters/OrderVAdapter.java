@@ -71,26 +71,18 @@ public class OrderVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         HorizontalListViewHolder holder = (HorizontalListViewHolder) rawHolder;
 //            holder.title.setText("Horizontal List No." + position);
         //create arraylist of items for the order
+        Log.d("string", position+"");
+
         Order current = mDataList.get(position);
-        mDbSingleton = DbSingleton.getInstance();
-        ArrayList<Item> currentOrderItems = new ArrayList<>();
-        String itemIdsString = current.getItemsString();
-        Log.d("abc", itemIdsString + " " +current.getOrderId());
 
-        if (!itemIdsString.equals("")) {
-            String[] itemIdsStringArray = itemIdsString.split(",");
-            Log.d("not", "empty");
-            for (String s : itemIdsStringArray) {
-                Item i = mDbSingleton.getItemById(Integer.valueOf(s));
+        ArrayList<Item> currentOrderItems = current.getItems();
+        Log.d("string", current.getItems().size()+"");
 
-                if (i != null) {
-                    currentOrderItems.add(i);
-                }
-            }
-            holder.horizontalAdapter.setData(currentOrderItems);
-            holder.horizontalAdapter.setRowIndex(position);
-        } else
-            Log.d("is", "empty");
+        for(Item item : currentOrderItems){
+            Log.d("string", item.getId()+"");
+        }
+        holder.horizontalAdapter.setData(currentOrderItems);
+        holder.horizontalAdapter.setRowIndex(position);
 
     }
 

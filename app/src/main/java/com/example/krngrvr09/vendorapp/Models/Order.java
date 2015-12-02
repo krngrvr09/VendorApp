@@ -125,7 +125,7 @@ public class Order {
                 (isPaymentMade) ? 1 : 0,
                 (isOrderCompleted) ? 1 : 0);
 
-        Log.d("query order", ((isPaymentMade) ? 1 : 0) + "");
+        Log.d("query order", query);
         return query;
     }
 
