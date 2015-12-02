@@ -5,10 +5,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.example.krngrvr09.vendorapp.Adapters.OrderVAdapter;
 import com.example.krngrvr09.vendorapp.Database.DbSingleton;
@@ -28,14 +28,12 @@ public class OrderListFragment extends Fragment {
     List<Order> mDataList;
 
     private RecyclerView mVerticalList;
-    private ImageView image1;
     private OrderVAdapter verticalAdapter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-//        prepareData();
         View view = inflater.inflate(R.layout.orders_list, container, false);
         mVerticalList = (RecyclerView) view.findViewById(R.id.rv_orders);
         mVerticalList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -64,6 +62,7 @@ public class OrderListFragment extends Fragment {
 
     @Subscribe
     public void RefreshUi(RefreshUiEvent event) {
+        Log.i("Refresh", "event");
         verticalAdapter.refresh();
 
     }

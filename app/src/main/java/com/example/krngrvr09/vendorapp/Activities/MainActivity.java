@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
 //        download.downloadItems();
         download.downloadAll();
 
+
         final CheckBox checkBox = (CheckBox) findViewById(R.id.checkbox);
 
         //TODO: uncomment this gcm part

@@ -220,34 +220,37 @@ public class AddItemActivity extends AppCompatActivity {
                                     {
                                         @Override
                                         public void onClick(View view) {
+
                                             String name = String.valueOf(add_name.getText());
                                             String price = String.valueOf(add_price.getText());
                                             String quantity = String.valueOf(add_quantity.getText());
-                                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                            Bitmap bm;
-                                            try {
-                                                bm = MediaStore.Images.Media.getBitmap(getContentResolver(), imagePath);
-                                                bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
-                                                byte[] b = baos.toByteArray();
-                                                String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
-                                                Item item = new Item(name, 0, "fb", Integer.parseInt(price), Integer.parseInt(quantity), encodedImage, 0);
-                                                APIClient apiClient = new APIClient();
-                                                apiClient.getmApi().createItem(item, new Callback<newItemResponse>() {
-                                                    @Override
-                                                    public void success(newItemResponse s, Response response) {
-                                                        Log.d("new item", "success");
 
-                                                    }
+                                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                                Bitmap bm;
+                                                try {
+                                                    bm = MediaStore.Images.Media.getBitmap(getContentResolver(), imagePath);
+                                                    bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+                                                    byte[] b = baos.toByteArray();
+                                                    String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+                                                    Item item = new Item(name, 0, "fb", Integer.parseInt(price), Integer.parseInt(quantity), "abc", 0);
+                                                    APIClient apiClient = new APIClient();
+                                                    apiClient.getmApi().createItem(item, new Callback<newItemResponse>() {
+                                                        @Override
+                                                        public void success(newItemResponse s, Response response) {
+                                                            Log.d("new item", "success");
 
-                                                    @Override
-                                                    public void failure(RetrofitError error) {
-                                                        Log.d("new item", error.getCause().toString());
+                                                        }
 
-                                                    }
-                                                });
-                                            } catch (IOException e) {
-                                                e.printStackTrace();
-                                            }
+                                                        @Override
+                                                        public void failure(RetrofitError error) {
+//                                                            Log.d("new item", error.getCause().toString());
+
+                                                        }
+                                                    });
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
+
                                         }
                                     }
 

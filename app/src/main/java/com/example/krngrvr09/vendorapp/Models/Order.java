@@ -4,7 +4,6 @@ import android.database.DatabaseUtils;
 import android.util.Log;
 
 import com.example.krngrvr09.vendorapp.Database.DbContract;
-import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -43,7 +42,7 @@ public class Order {
 
     public String getItemsString() {
         if (itemsString == null) {
-            return "0,";
+            return "";
         } else {
             return itemsString;
         }
@@ -111,8 +110,6 @@ public class Order {
 
     public String generateSql() {
         String query_normal = "INSERT INTO %s VALUES ('%d', '%d', %s , '%s' , '%d', '%d' , '%d');";
-        String order_name = "Order demo";
-        Gson gson = new Gson();
         Log.d("TAG", getItemsString());
         String query = String.format(
                 query_normal,

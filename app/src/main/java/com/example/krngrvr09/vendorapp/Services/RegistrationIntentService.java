@@ -7,12 +7,18 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.example.krngrvr09.vendorapp.Models.GcmToken;
 import com.example.krngrvr09.vendorapp.R;
+import com.example.krngrvr09.vendorapp.api.APIClient;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
 import java.io.IOException;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
 /**
@@ -78,6 +84,22 @@ public class RegistrationIntentService extends IntentService {
      */
     private void sendRegistrationToServer(String token) {
         // TODO:: Add custom implementation, as needed.
+        APIClient apiClient = new APIClient();
+
+        GcmToken gcmToken = new GcmToken(1,token);
+        apiClient.getmApi().setGcm(gcmToken, new Callback<String>() {
+            @Override
+            public void success(String s, Response response) {
+                Log.d("set_gcm", s);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d("set_gcm fail", error.getCause().toString());
+
+            }
+        });
+
     }
 
     /**

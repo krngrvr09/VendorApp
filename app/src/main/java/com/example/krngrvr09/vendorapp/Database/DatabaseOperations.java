@@ -126,7 +126,7 @@ public class DatabaseOperations {
         while (!cur.isAfterLast()) {
             if ((cur.getString(cur.getColumnIndex(DbContract.Orders.ITEMS))) != null && !(cur.getString(cur.getColumnIndex(DbContract.Orders.ITEMS)).isEmpty())) {
                 String[] itemIdsStringArray = cur.getString(cur.getColumnIndex(DbContract.Orders.ITEMS)).split(",");
-                Log.d("abc1", itemIdsStringArray.length + "");
+                Log.d("items abc", itemIdsStringArray.length + "");
 
 
                 for (String s : itemIdsStringArray) {
@@ -158,6 +158,8 @@ public class DatabaseOperations {
                         itemsInOrder.add(item);
                         curItem.moveToNext();
                     }
+                    Log.d("items abc1", itemsInOrder.size() + "");
+
                     curItem.close();
                 }
             }
