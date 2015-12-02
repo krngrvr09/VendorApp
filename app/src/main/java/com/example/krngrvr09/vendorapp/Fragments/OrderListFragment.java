@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import com.example.krngrvr09.vendorapp.Adapters.OrderVAdapter;
 import com.example.krngrvr09.vendorapp.Database.DbSingleton;
 import com.example.krngrvr09.vendorapp.Events.OrderDownloadDoneEvent;
+import com.example.krngrvr09.vendorapp.Models.Order;
 import com.example.krngrvr09.vendorapp.R;
 import com.example.krngrvr09.vendorapp.VendorApp;
 import com.example.krngrvr09.vendorapp.api.APIClient;
@@ -28,7 +29,7 @@ import java.util.List;
  */
 public class OrderListFragment extends Fragment{
 
-    List<List<String>> mDataList;
+    List<Order> mDataList;
 
     private RecyclerView mVerticalList;
     private ImageView image1;
@@ -38,15 +39,19 @@ public class OrderListFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        prepareData();
+//        prepareData();
         View view = inflater.inflate(R.layout.orders_list, container, false);
         mVerticalList = (RecyclerView) view.findViewById(R.id.rv_orders);
         mVerticalList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         OrderVAdapter verticalAdapter = new OrderVAdapter();
+        DbSingleton mDbSingleton = DbSingleton.getInstance();
+        mDataList = mDbSingleton.getPendingOrdersList();
         verticalAdapter.setData(mDataList);
         mVerticalList.setAdapter(verticalAdapter);
         return view;
     }
+
+
     @Override
     public void onPause() {
         super.onPause();
@@ -86,19 +91,19 @@ public class OrderListFragment extends Fragment{
 
     }
 
-    private void prepareData() {
-
-        mDataList = new ArrayList<>();
-        int vItemCount = 25;
-        int hItemCount = 20;
-        for (int i = 0; i < vItemCount; i++) {
-            List<String> hList = new ArrayList<>();
-            for (int j = 0; j < hItemCount; j++) {
-                hList.add("Item." + j);
-            }
-            mDataList.add(hList);
-        }
-    }
+//    private void prepareData() {
+//
+//        mDataList = new ArrayList<>();
+//        int vItemCount = 25;
+//        int hItemCount = 20;
+//        for (int i = 0; i < vItemCount; i++) {
+//            List<String> hList = new ArrayList<>();
+//            for (int j = 0; j < hItemCount; j++) {
+//                hList.add("Item." + j);
+//            }
+//            mDataList.add(hList);
+//        }
+//    }
 
 
 }

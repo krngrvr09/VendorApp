@@ -18,6 +18,7 @@ import java.util.List;
 /**
  * Created by Manan Wason on 15/11/15.
  */
+
 public class DatabaseOperations {
     private static final String ASCENDING = " ASC";
 
@@ -102,9 +103,9 @@ public class DatabaseOperations {
         return orders;
     }
 
-    public ArrayList<Order> getPendingOrderList(SQLiteDatabase mDb, int userId) {
-        String selection = DbContract.Orders.USER_ID + EQUAL + userId + " and " +
-                DbContract.Orders.IS_ORDER_COMPLETED + EQUAL + " '1'";
+    public ArrayList<Order> getPendingOrderList(SQLiteDatabase mDb) {
+        String selection = DbContract.Orders.IS_PAYMENT_DONE + EQUAL + " '0' or ("+ DbContract.Orders.IS_PAYMENT_DONE + EQUAL +
+                " '1' and "+ DbContract.Orders.IS_ORDER_COMPLETED + EQUAL + " '0')";
 
         String sortOrder = DbContract.Orders.ORDER_ID + ASCENDING;
         Cursor cur = mDb.query(
@@ -122,21 +123,51 @@ public class DatabaseOperations {
 
         cur.moveToFirst();
         while (!cur.isAfterLast()) {
-//            temp = new Order(
-//                    cur.getInt(cur.getColumnIndex(DbContract.Orders.ORDER_ID)),
-//                    cur.getInt(cur.getColumnIndex(DbContract.Orders.USER_ID)),
-//                    cur.getString(cur.getColumnIndex(DbContract.Orders.ITEMS)),
-//                    cur.getString(cur.getColumnIndex(DbContract.Orders.TIME)),
-//                    cur.getInt(cur.getColumnIndex(DbContract.Orders.COST)),
-//                    cur.getInt(cur.getColumnIndex(DbContract.Orders.IS_ORDER_COMPLETED))>0,
-//                    cur.getInt(cur.getColumnIndex(DbContract.Orders.IS_PAYMENT_DONE))>0);
-//            orders.add(temp);
+            temp = new Order(
+                    cur.getInt(cur.getColumnIndex(DbContract.Orders.ORDER_ID)),
+                    cur.getInt(cur.getColumnIndex(DbContract.Orders.USER_ID)),
+                    null,                                                       //HAVE TO CREATE ARRAYLIST OF ITEMS IN ORDER OURSELVES
+                    cur.getString(cur.getColumnIndex(DbContract.Orders.TIME)),
+                    cur.getInt(cur.getColumnIndex(DbContract.Orders.COST)),
+                    cur.getInt(cur.getColumnIndex(DbContract.Orders.IS_ORDER_COMPLETED))>0,
+                    cur.getInt(cur.getColumnIndex(DbContract.Orders.IS_PAYMENT_DONE))>0);
+            orders.add(temp);
             cur.moveToNext();
         }
         cur.close();
         return orders;
     }
 
+    public Item getItemById(SQLiteDatabase mDb,int itemId){
+        String selection = DbContract.Items.ITEM_ID + EQUAL + " '" + itemId +"' ";
+        String sortOrder = DbContract.Orders.ORDER_ID + ASCENDING;
+        Cursor cur = mDb.query(
+                DbContract.Items.TABLE_NAME,
+                DbContract.Items.FULL_PROJECTION,
+                selection,
+                null,
+                null,
+                null,
+                sortOrder
+        );
+        ArrayList<Item> items = new ArrayList<>();
+        Item temp;
+        cur.moveToFirst();
+        while(!cur.isAfterLast()){
+            temp = new Item(
+                    cur.getString(cur.getColumnIndex(DbContract.Items.ITEM_NAME)),
+                    itemId,
+                    cur.getString(cur.getColumnIndex(DbContract.Items.CONTENTS)),
+                    cur.getInt(cur.getColumnIndex(DbContract.Items.PRICE)),
+                    cur.getInt(cur.getColumnIndex(DbContract.Items.QUANTITY_AVAILABLE)),
+                    cur.getString(cur.getColumnIndex(DbContract.Items.IMAGE_URL)),
+                    cur.getInt((cur.getColumnIndex(DbContract.Items.RATING)))
+                    );
+            items.add(temp);
+        }
+        cur.close();
+        return items.get(0);
+    }
 
     public void insertQuery(String query, DbHelper mDbHelper) {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();

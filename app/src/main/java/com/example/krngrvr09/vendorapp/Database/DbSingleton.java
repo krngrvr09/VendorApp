@@ -57,6 +57,10 @@ public class DbSingleton {
 
     }
 
+    public Item getItemById(int itemId){
+        getReadOnlyDatabase();
+        return databaseOperations.getItemById(mDb,itemId);
+    }
     public ArrayList<Order> getCompletedOrdersList() {
         getReadOnlyDatabase();
         return databaseOperations.getCompletedOrderList(mDb); // revisit user id
@@ -64,7 +68,7 @@ public class DbSingleton {
 
     public ArrayList<Order> getPendingOrdersList() {
         getReadOnlyDatabase();
-        return databaseOperations.getPendingOrderList(mDb, 1);   //revisit user id
+        return databaseOperations.getPendingOrderList(mDb);   //revisit user id
     }
 
 

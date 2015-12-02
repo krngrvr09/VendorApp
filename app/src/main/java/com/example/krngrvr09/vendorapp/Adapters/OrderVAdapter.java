@@ -3,12 +3,17 @@ package com.example.krngrvr09.vendorapp.Adapters;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.krngrvr09.vendorapp.Database.DbSingleton;
+import com.example.krngrvr09.vendorapp.Models.Item;
+import com.example.krngrvr09.vendorapp.Models.Order;
 import com.example.krngrvr09.vendorapp.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,12 +21,13 @@ import java.util.List;
  */
 public class OrderVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<List<String>> mDataList;
+    private List<Order> mDataList;
+    DbSingleton mDbSingleton;
 
     public OrderVAdapter() {
     }
 
-    public void setData(List<List<String>> data) {
+    public void setData(List<Order> data) {
         mDataList = data;
         notifyDataSetChanged();
     }
@@ -55,8 +61,23 @@ public class OrderVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(RecyclerView.ViewHolder rawHolder, int position) {
         HorizontalListViewHolder holder = (HorizontalListViewHolder) rawHolder;
 //            holder.title.setText("Horizontal List No." + position);
-        holder.horizontalAdapter.setData(mDataList.get(position));
-        holder.horizontalAdapter.setRowIndex(position);
+        //create arraylist of items for the order
+        Order current = mDataList.get(position);
+        mDbSingleton = DbSingleton.getInstance();
+        ArrayList<Item> currentOrderItems = new ArrayList<>();
+        String itemIdsString = current.getItemsString();
+        if(!itemIdsString.equals("")) {
+            String[] itemIdsStringArray = itemIdsString.split(" ,");
+            Log.d("not", "empty");
+            for(String s:itemIdsStringArray){
+                currentOrderItems.add(mDbSingleton.getItemById(Integer.valueOf(s)));
+            }
+            holder.horizontalAdapter.setData(currentOrderItems);
+            holder.horizontalAdapter.setRowIndex(position);
+        }
+        else
+            Log.d("is","empty");
+
     }
 
     @Override

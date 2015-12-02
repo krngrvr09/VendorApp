@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.krngrvr09.vendorapp.Models.Item;
 import com.example.krngrvr09.vendorapp.R;
 import com.squareup.picasso.Picasso;
 
@@ -19,14 +20,15 @@ import java.util.List;
  * Created by Manan Wason on 11/11/15.
  */
 public class OrderHAdpater extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
     private static Toast sToast;
-    private List<String> mDataList;
+    private List<Item> mDataList;
     private int mRowIndex = -1;
 
     public OrderHAdpater() {
     }
 
-    public void setData(List<String> data) {
+    public void setData(List<Item> data) {
         if (mDataList != data) {
             mDataList = data;
             notifyDataSetChanged();
