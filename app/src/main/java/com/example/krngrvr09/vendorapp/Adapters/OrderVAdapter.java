@@ -67,11 +67,12 @@ public class OrderVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         ArrayList<Item> currentOrderItems = new ArrayList<>();
         String itemIdsString = current.getItemsString();
         if(!itemIdsString.equals("")) {
-            String[] itemIdsStringArray = itemIdsString.split(" ,");
+            String[] itemIdsStringArray = itemIdsString.split(",");
             Log.d("not", "empty");
             for(String s:itemIdsStringArray){
-
-                currentOrderItems.add(mDbSingleton.getItemById(Integer.valueOf(s)));
+                Item i = mDbSingleton.getItemById(Integer.valueOf(s));
+                if(i!=null)
+                currentOrderItems.add(i);
             }
             holder.horizontalAdapter.setData(currentOrderItems);
             holder.horizontalAdapter.setRowIndex(position);

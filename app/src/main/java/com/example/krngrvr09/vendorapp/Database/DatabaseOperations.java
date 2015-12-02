@@ -140,7 +140,7 @@ public class DatabaseOperations {
 
     public Item getItemById(SQLiteDatabase mDb,int itemId){
         String selection = DbContract.Items.ITEM_ID + EQUAL + " '" + itemId +"' ";
-        String sortOrder = DbContract.Orders.ORDER_ID + ASCENDING;
+        String sortOrder = DbContract.Items.ITEM_ID + ASCENDING;
         Cursor cur = mDb.query(
                 DbContract.Items.TABLE_NAME,
                 DbContract.Items.FULL_PROJECTION,
@@ -166,7 +166,10 @@ public class DatabaseOperations {
             items.add(temp);
         }
         cur.close();
-        return items.get(0);
+        if(items.size()>0)
+            return items.get(0);
+        else
+            return null;
     }
 
     public void insertQuery(String query, DbHelper mDbHelper) {

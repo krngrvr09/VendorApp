@@ -35,7 +35,7 @@ public class OrdersListResponseProcessor implements Callback<OrdersResponseList>
                 items.remove(0);
 
                 for (Item item : items) {
-                    itemString.append(" ,");
+                    itemString.append(",");
                     itemString.append(item.getId());
 
                     Log.d("qwer", itemString.toString());
