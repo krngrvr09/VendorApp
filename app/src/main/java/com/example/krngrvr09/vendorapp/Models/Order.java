@@ -42,7 +42,11 @@ public class Order {
     }
 
     public String getItemsString() {
-        return itemsString;
+        if (itemsString == null) {
+            return "0,";
+        } else {
+            return itemsString;
+        }
     }
 
     public void setItemsString(String itemsString) {
@@ -109,6 +113,7 @@ public class Order {
         String query_normal = "INSERT INTO %s VALUES ('%d', '%d', %s , '%s' , '%d', '%d' , '%d');";
         String order_name = "Order demo";
         Gson gson = new Gson();
+        Log.d("TAG", getItemsString());
         String query = String.format(
                 query_normal,
                 DbContract.Orders.TABLE_NAME,

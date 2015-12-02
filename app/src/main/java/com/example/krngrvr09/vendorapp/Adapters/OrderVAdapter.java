@@ -70,6 +70,7 @@ public class OrderVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             String[] itemIdsStringArray = itemIdsString.split(" ,");
             Log.d("not", "empty");
             for(String s:itemIdsStringArray){
+
                 currentOrderItems.add(mDbSingleton.getItemById(Integer.valueOf(s)));
             }
             holder.horizontalAdapter.setData(currentOrderItems);
