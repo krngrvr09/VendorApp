@@ -62,7 +62,7 @@ public class OrderHAdpater extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(RecyclerView.ViewHolder rawHolder, int position) {
         ItemViewHolder holder = (ItemViewHolder) rawHolder;
         Uri uri = Uri.parse("http://pctechmag.com/wp-content/uploads/2013/09/android-double-down.jpg");
-        Picasso.with(holder.image.getContext()).load(uri).error(R.drawable.github).into(holder.image);
+        Picasso.with(holder.image.getContext()).load(R.drawable.github).into(holder.image);
         holder.itemView.setTag(position);
     }
 

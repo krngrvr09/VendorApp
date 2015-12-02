@@ -33,17 +33,14 @@ public class OrdersListResponseProcessor implements Callback<OrdersResponseList>
                 StringBuilder itemString = new StringBuilder();
                 itemString.append(items.get(0).getId());
                 items.remove(0);
-
+                Log.d(TAG, itemString.toString());
                 for (Item item : items) {
                     itemString.append(",");
                     itemString.append(item.getId());
-
-                    Log.d("qwer", itemString.toString());
-
                 }
+                Log.d(TAG, itemString.toString());
                 order.setItemsString(itemString.toString());
-                String query = order.generateSql();
-                queries.add(query);
+
             } else {
                 if (items.equals(null)) {
                     order.setItemsString(" ");

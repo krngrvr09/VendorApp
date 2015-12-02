@@ -49,6 +49,15 @@ public class OrderVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
+    public void refresh() {
+
+        DbSingleton dbSingleton = DbSingleton.getInstance();
+        mDataList.clear();
+        mDataList = dbSingleton.getPendingOrdersList();
+        notifyDataSetChanged();
+
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
@@ -66,19 +75,22 @@ public class OrderVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         mDbSingleton = DbSingleton.getInstance();
         ArrayList<Item> currentOrderItems = new ArrayList<>();
         String itemIdsString = current.getItemsString();
-        if(!itemIdsString.equals("")) {
+        Log.d("abc", itemIdsString + " " +current.getOrderId());
+
+        if (!itemIdsString.equals("")) {
             String[] itemIdsStringArray = itemIdsString.split(",");
             Log.d("not", "empty");
-            for(String s:itemIdsStringArray){
+            for (String s : itemIdsStringArray) {
                 Item i = mDbSingleton.getItemById(Integer.valueOf(s));
-                if(i!=null)
-                currentOrderItems.add(i);
+
+                if (i != null) {
+                    currentOrderItems.add(i);
+                }
             }
             holder.horizontalAdapter.setData(currentOrderItems);
             holder.horizontalAdapter.setRowIndex(position);
-        }
-        else
-            Log.d("is","empty");
+        } else
+            Log.d("is", "empty");
 
     }
 
