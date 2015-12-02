@@ -124,41 +124,42 @@ public class DatabaseOperations {
 
         cur.moveToFirst();
         while (!cur.isAfterLast()) {
-            String[] itemIdsStringArray = cur.getString(cur.getColumnIndex(DbContract.Orders.ITEMS)).split(",");
-            for (String s : itemIdsStringArray) {
-                String selectionItem = DbContract.Items.ITEM_ID + EQUAL + Integer.valueOf(s);
-                Log.d("abc3", selectionItem);
+            if ((cur.getString(cur.getColumnIndex(DbContract.Orders.ITEMS))) != null && !(cur.getString(cur.getColumnIndex(DbContract.Orders.ITEMS)).isEmpty())) {
+                String[] itemIdsStringArray = cur.getString(cur.getColumnIndex(DbContract.Orders.ITEMS)).split(",");
+                Log.d("abc1", itemIdsStringArray.length + "");
 
-                String sortItem = DbContract.Items.ITEM_ID + ASCENDING;
-                Cursor curItem = mDb.query(
-                        DbContract.Items.TABLE_NAME,
-                        DbContract.Items.FULL_PROJECTION,
-                        selectionItem,
-                        null,
-                        null,
-                        null,
-                        sortItem
-                );
-                Log.d("abc2", itemsInOrder.size() + " " + curItem.getCount());
 
-                curItem.moveToFirst();
-                while (!curItem.isAfterLast()) {
-                    Log.d("abc2", itemsInOrder.size() + "");
+                for (String s : itemIdsStringArray) {
+                    String selectionItem = DbContract.Items.ITEM_ID + EQUAL + Integer.valueOf(s);
 
-                    Item item;
-                    item = new Item(
-                            curItem.getString(curItem.getColumnIndex(DbContract.Items.ITEM_NAME)),
-                            curItem.getInt(curItem.getColumnIndex(DbContract.Items.ITEM_ID)),
-                            curItem.getString(curItem.getColumnIndex(DbContract.Items.CONTENTS)),
-                            curItem.getInt(curItem.getColumnIndex(DbContract.Items.PRICE)),
-                            curItem.getInt(curItem.getColumnIndex(DbContract.Items.QUANTITY_ORDERED)),
-                            curItem.getString(curItem.getColumnIndex(DbContract.Items.IMAGE_URL)),
-                            curItem.getInt(curItem.getColumnIndex(DbContract.Items.RATING)));
-                    itemsInOrder.add(item);
-                    Log.d("abc2", itemsInOrder.size() + "");
-                    curItem.moveToNext();
+                    String sortItem = DbContract.Items.ITEM_ID + ASCENDING;
+                    Cursor curItem = mDb.query(
+                            DbContract.Items.TABLE_NAME,
+                            DbContract.Items.FULL_PROJECTION,
+                            selectionItem,
+                            null,
+                            null,
+                            null,
+                            sortItem
+                    );
+
+                    curItem.moveToFirst();
+                    while (!curItem.isAfterLast()) {
+
+                        Item item;
+                        item = new Item(
+                                curItem.getString(curItem.getColumnIndex(DbContract.Items.ITEM_NAME)),
+                                curItem.getInt(curItem.getColumnIndex(DbContract.Items.ITEM_ID)),
+                                curItem.getString(curItem.getColumnIndex(DbContract.Items.CONTENTS)),
+                                curItem.getInt(curItem.getColumnIndex(DbContract.Items.PRICE)),
+                                curItem.getInt(curItem.getColumnIndex(DbContract.Items.QUANTITY_ORDERED)),
+                                curItem.getString(curItem.getColumnIndex(DbContract.Items.IMAGE_URL)),
+                                curItem.getInt(curItem.getColumnIndex(DbContract.Items.RATING)));
+                        itemsInOrder.add(item);
+                        curItem.moveToNext();
+                    }
+                    curItem.close();
                 }
-                curItem.close();
             }
 
 
@@ -171,7 +172,6 @@ public class DatabaseOperations {
                     cur.getInt(cur.getColumnIndex(DbContract.Orders.IS_ORDER_COMPLETED)) > 0,
                     cur.getInt(cur.getColumnIndex(DbContract.Orders.IS_PAYMENT_DONE)) > 0);
             orders.add(temp);
-            Log.d("abc1", temp.getItems().size() + "");
 
             cur.moveToNext();
         }

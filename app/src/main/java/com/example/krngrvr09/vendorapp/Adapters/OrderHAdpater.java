@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.krngrvr09.vendorapp.Models.Item;
@@ -41,11 +42,13 @@ public class OrderHAdpater extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private class ItemViewHolder extends RecyclerView.ViewHolder {
         private ImageView image;
+        private TextView itemName;
 
 
         public ItemViewHolder(View itemView) {
             super(itemView);
             image = (ImageView) itemView.findViewById(R.id.image1);
+            itemName = (TextView) itemView.findViewById(R.id.item_name);
             itemView.setOnClickListener(mItemClickListener);
         }
     }
@@ -63,6 +66,7 @@ public class OrderHAdpater extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         ItemViewHolder holder = (ItemViewHolder) rawHolder;
         Uri uri = Uri.parse("http://pctechmag.com/wp-content/uploads/2013/09/android-double-down.jpg");
         Picasso.with(holder.image.getContext()).load(R.drawable.github).into(holder.image);
+        holder.itemName.setText(mDataList.get(position).getName());
         holder.itemView.setTag(position);
     }
 

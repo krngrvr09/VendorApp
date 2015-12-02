@@ -26,7 +26,6 @@ public class OrdersListResponseProcessor implements Callback<OrdersResponseList>
     public void success(final OrdersResponseList ordersResponseList, Response response) {
         Log.d("retro", "success");
         ArrayList<String> queries = new ArrayList<String>();
-        Log.d("orderesponse", String.valueOf(ordersResponseList.orders));
         for (Order order : ordersResponseList.orders) {
             ArrayList<Item> items = order.getItems();
             if (!items.isEmpty()) {
@@ -42,11 +41,12 @@ public class OrdersListResponseProcessor implements Callback<OrdersResponseList>
                 order.setItemsString(itemString.toString());
 
             } else {
-                order.setItemsString(" ");
+                order.setItemsString(null);
 
             }
             String query = order.generateSql();
             queries.add(query);
+            Log.d(TAG, query);
         }
 
         DbSingleton dbSingleton = DbSingleton.getInstance();
