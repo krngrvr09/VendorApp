@@ -33,20 +33,30 @@ public class MyGcmListenerService extends GcmListenerService {
     // [START receive_message]
     @Override
     public void onMessageReceived(String from, Bundle data) {
-        String order_id = data.getString("order_id");
-        DataDownload download = new DataDownload();
+        String message = data.getString("order_id");
+        Log.d(TAG, "From: " + from);
+        Log.d(TAG, "Message: " + message);
 
-//        Log.d(TAG, "From: " + from);
-//        Log.d(TAG, "Message: " + message);
-//
-//        if (from.startsWith("/topics/")) {
-//            // message received from some topic.
-//        } else {
-//            // normal downstream message.
-//        }
+        new DataDownload().downloadAll();
+        if (from.startsWith("/topics/")) {
+            // message received from some topic.
+        } else {
+            // normal downstream message.
+        }
 
-//        sendNotification(order_id);
+        // [START_EXCLUDE]
+        /**
+         * Production applications would usually process the message here.
+         * Eg: - Syncing with server.
+         *     - Store message in local database.
+         *     - Update UI.
+         */
 
+        /**
+         * In some cases it may be useful to show a notification indicating to the user
+         * that a message was received.
+         */
+//        sendNotification(message);
         // [END_EXCLUDE]
     }
 

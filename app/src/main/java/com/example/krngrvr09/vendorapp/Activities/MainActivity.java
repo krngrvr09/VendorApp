@@ -22,7 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -79,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
         download.downloadAll();
 
 
-        final CheckBox checkBox = (CheckBox) findViewById(R.id.checkbox);
 
         //TODO: uncomment this gcm part
 
@@ -155,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (event.isState()) {
             eventsDone++;
-            Log.d("retroevent", counter + "  " +eventsDone);
+            Log.d("retroevent1", eventsDone + "  " +counter);
 
             if (counter == eventsDone) {
                 syncComplete();

@@ -24,7 +24,6 @@ import java.util.List;
 public class OrderVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<Order> mDataList;
-    DbSingleton mDbSingleton;
     int index;
 
     public OrderVAdapter(int i) {
