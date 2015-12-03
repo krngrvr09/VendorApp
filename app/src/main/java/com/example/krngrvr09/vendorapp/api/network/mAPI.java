@@ -2,6 +2,7 @@ package com.example.krngrvr09.vendorapp.api.network;
 
 import com.example.krngrvr09.vendorapp.Models.GcmToken;
 import com.example.krngrvr09.vendorapp.Models.Item;
+import com.example.krngrvr09.vendorapp.Models.OrderId;
 import com.example.krngrvr09.vendorapp.api.protocol.ItemsResponseList;
 import com.example.krngrvr09.vendorapp.api.protocol.OrdersResponseList;
 import com.example.krngrvr09.vendorapp.api.protocol.UserResponse;
@@ -31,5 +32,8 @@ public interface mAPI {
 
     @POST("/set_gcm")
     void setGcm(@Body GcmToken newToken, Callback<String> callback);
+
+    @POST("/order_complete")
+    void orderComplete(@Body OrderId orderId, Callback<String> callback);
 
 }

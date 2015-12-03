@@ -12,7 +12,10 @@ import android.widget.Button;
 import com.example.krngrvr09.vendorapp.Database.DbSingleton;
 import com.example.krngrvr09.vendorapp.Models.Item;
 import com.example.krngrvr09.vendorapp.Models.Order;
+import com.example.krngrvr09.vendorapp.Models.orderCompleteEvent;
 import com.example.krngrvr09.vendorapp.R;
+import com.example.krngrvr09.vendorapp.api.APIClient;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,5 +114,23 @@ public class OrderVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public int getItemCount() {
         return mDataList.size();
+    }
+
+    @Subscribe
+    public void orderComplete(orderCompleteEvent event){
+        APIClient client = new APIClient();
+////        OrderId orderId = new OrderId()
+//        client.getmApi().orderComplete(orderId, new Callback<String>() {
+//            @Override
+//            public void success(String s, Response response) {
+//
+//            }
+//
+//            @Override
+//            public void failure(RetrofitError error) {
+//
+//            }
+//        });
+
     }
 }
