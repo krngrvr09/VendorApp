@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.krngrvr09.vendorapp.Database.DbSingleton;
 import com.example.krngrvr09.vendorapp.Models.Item;
@@ -19,6 +20,7 @@ import java.util.List;
 /**
  * Created by Manan Wason on 11/11/15.
  */
+
 public class OrderVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<Order> mDataList;
@@ -39,12 +41,24 @@ public class OrderVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         //            private TextView title;
         private RecyclerView horizontalList;
         private OrderHAdpater horizontalAdapter;
+        private Button markAsCompleted;
 
         public HorizontalListViewHolder(View itemView) {
             super(itemView);
             Context context = itemView.getContext();
 //                title = (TextView) itemView.findViewById(R.id.item_title);
             horizontalList = (RecyclerView) itemView.findViewById(R.id.item_horizontal_list);
+            markAsCompleted = (Button) itemView.findViewById(R.id.markAsCompleted);
+            if(index==1)
+                markAsCompleted.setVisibility(View.GONE);
+            else{
+                markAsCompleted.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+            }
             horizontalList.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
             horizontalAdapter = new OrderHAdpater();
             horizontalList.setAdapter(horizontalAdapter);
@@ -59,6 +73,7 @@ public class OrderVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             mDataList = dbSingleton.getPendingOrdersList();
         } else {
             mDataList = dbSingleton.getCompletedOrdersList();
+
         }
         notifyDataSetChanged();
 

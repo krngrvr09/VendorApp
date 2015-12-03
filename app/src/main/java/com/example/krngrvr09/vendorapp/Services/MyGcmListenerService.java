@@ -11,6 +11,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.example.krngrvr09.vendorapp.Activities.MainActivity;
+import com.example.krngrvr09.vendorapp.Helpers.DataDownload;
 import com.example.krngrvr09.vendorapp.R;
 import com.google.android.gms.gcm.GcmListenerService;
 
@@ -32,49 +33,37 @@ public class MyGcmListenerService extends GcmListenerService {
     // [START receive_message]
     @Override
     public void onMessageReceived(String from, Bundle data) {
-        String message = data.getString("order_id");
-        Log.d(TAG, "From: " + from);
-        Log.d(TAG, "Message: " + message);
+        String order_id = data.getString("order_id");
+        DataDownload download = new DataDownload();
 
-        if (from.startsWith("/topics/")) {
-            // message received from some topic.
-        } else {
-            // normal downstream message.
-        }
+//        Log.d(TAG, "From: " + from);
+//        Log.d(TAG, "Message: " + message);
+//
+//        if (from.startsWith("/topics/")) {
+//            // message received from some topic.
+//        } else {
+//            // normal downstream message.
+//        }
 
-        // [START_EXCLUDE]
-        /**
-         * Production applications would usually process the message here.
-         * Eg: - Syncing with server.
-         *     - Store message in local database.
-         *     - Update UI.
-         */
+//        sendNotification(order_id);
 
-        /**
-         * In some cases it may be useful to show a notification indicating to the user
-         * that a message was received.
-         */
-        sendNotification(message);
         // [END_EXCLUDE]
     }
-    // [END receive_message]
 
-    /**
-     * Create and show a simple notification containing the received GCM message.
-     *
-     * @param message GCM message received.
-     */
-    private void sendNotification(String message) {
+
+
+    private void sendNotification(String orderId) {
         Intent intent = new Intent(this, MainActivity.class);       //Change name of activity.
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("orderId",orderId);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ingredients24black)        //change icon in notification
-                .setContentTitle(message)
-                .setContentText(message)
+                .setContentTitle("New Order Received")
+                .setContentText("Click to see order")
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);

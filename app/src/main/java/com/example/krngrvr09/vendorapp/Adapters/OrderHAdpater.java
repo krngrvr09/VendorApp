@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,12 +44,13 @@ public class OrderHAdpater extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private class ItemViewHolder extends RecyclerView.ViewHolder {
         private ImageView image;
         private TextView itemName;
-
+        private CheckBox mCheckBox;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
             image = (ImageView) itemView.findViewById(R.id.image1);
             itemName = (TextView) itemView.findViewById(R.id.item_name);
+            mCheckBox = (CheckBox) itemView.findViewById(R.id.checkbox);
             itemView.setOnClickListener(mItemClickListener);
         }
     }
