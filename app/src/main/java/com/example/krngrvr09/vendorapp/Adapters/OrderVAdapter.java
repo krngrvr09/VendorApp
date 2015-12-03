@@ -23,8 +23,10 @@ public class OrderVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private List<Order> mDataList;
     DbSingleton mDbSingleton;
+    int index;
 
-    public OrderVAdapter() {
+    public OrderVAdapter(int i) {
+        index = i;
     }
 
     public void setData(List<Order> data) {
@@ -53,7 +55,11 @@ public class OrderVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         DbSingleton dbSingleton = DbSingleton.getInstance();
         mDataList.clear();
-        mDataList = dbSingleton.getPendingOrdersList();
+        if (index == 0) {
+            mDataList = dbSingleton.getPendingOrdersList();
+        } else {
+            mDataList = dbSingleton.getCompletedOrdersList();
+        }
         notifyDataSetChanged();
 
     }
@@ -69,16 +75,16 @@ public class OrderVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder rawHolder, int position) {
         HorizontalListViewHolder holder = (HorizontalListViewHolder) rawHolder;
-        Log.d("Adapter v", mDataList.get(position).getOrderId()+"");
+        Log.d("Adapter v", mDataList.get(position).getOrderId() + "");
 
 //            holder.title.setText("Horizontal List No." + position);
         //create arraylist of items for the order
-        Log.d("string1 ", mDataList.get(position).getOrderId()+"");
+        Log.d("string1 ", mDataList.get(position).getOrderId() + "");
 
         Order current = mDataList.get(position);
 
         ArrayList<Item> currentOrderItems = current.getItems();
-        Log.d("string", mDataList.get(position).getItems().size()+"");
+        Log.d("string", mDataList.get(position).getItems().size() + "");
 
 //        for(Item item : currentOrderItems){
 //            Log.d("string", item.getId()+"");

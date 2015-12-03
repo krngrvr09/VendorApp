@@ -37,7 +37,7 @@ public class OrderListFragment extends Fragment {
         View view = inflater.inflate(R.layout.orders_list, container, false);
         mVerticalList = (RecyclerView) view.findViewById(R.id.rv_orders);
         mVerticalList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        verticalAdapter = new OrderVAdapter();
+        verticalAdapter = new OrderVAdapter(0);
         DbSingleton mDbSingleton = DbSingleton.getInstance();
         mDataList = mDbSingleton.getPendingOrdersList();
         verticalAdapter.setData(mDataList);
